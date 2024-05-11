@@ -1,0 +1,11 @@
+SubjectID,AgeSession,Gender,DisDurDiag,AgeDiag,DisDurON,AgeOnset,SiteOnset,ALSFRSTot,ALSFRSBulb,Intell (%),SpeakRate (words/min)
+A002,62,F,19,60,31,59,Lower limbs,31,12,100,151.72
+A006,64,F,20,62,109,55,Upper/Lower limbs,26,12,96.36,122.68
+A008,55,M,15,54,28,53,Upper limbs,39,11,91.82,143.17
+A009,45,F,29,42,41,41,Lower limbs,26,7,28.18,63.28
+A010,68,M,10,67,26,66,Upper limbs,40,12,87.27,88.61
+A011,57,F,53,52,99,48,Lower limbs,35,9,135.53,100
+A012,61,F,6,61,30,59,Lower limbs,36,6,not collected,not collected
+A014,75,F,24,72,84,67,Lower limbs,38,12,98.18,147.32
+A015,62,M,36,59,37,59,Bulbar,36,7,not collected,not collected
+A017,69,F,27,67,39,66,Lower limbs,39,12,100,144.1
