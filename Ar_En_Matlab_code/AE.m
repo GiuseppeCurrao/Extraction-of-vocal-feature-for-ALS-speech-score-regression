@@ -12,7 +12,9 @@ path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
 csv_Stroke = readtable("Stroke\Normal.csv");
 %%
 ae_HC=ae_extraction(path_HC, csv_HC);
+%%
 ae_SLA=ae_extraction(path_SLA,csv_SLA);
+%%
 ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
 %%
 for i=1:size(ae_HC,1)
