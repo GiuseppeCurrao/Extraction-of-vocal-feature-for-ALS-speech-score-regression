@@ -64,7 +64,11 @@ function ae = ae_extraction(path,csv)
         if isempty(F)
             ae(row, col)=0;
         else
-            ae(row,col)=[artic_ent(F,size(F,1))];
+            try
+                ae(row,col)=[artic_ent(F,size(F,1))];
+            catch
+                fprintf("File non letto");
+            end
         end
     end
 end
