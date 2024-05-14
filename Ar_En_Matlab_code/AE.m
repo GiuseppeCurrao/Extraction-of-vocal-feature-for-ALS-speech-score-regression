@@ -5,40 +5,28 @@ clc;
 % You may need to add voicebox (a Matlab toolbox) into your path
 code_folder =pwd;
 path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
-csv_HC = readtable("Healthy Control\Normal.csv");
-csv_HC_vod = readtable("Healthy Control\Normal\Normal_csv.csv");
-path_SLA = fullfile(code_folder, "Data\SLA\Normal");
-csv_SLA = readtable("SLA\Normal.csv");
-csv_SLA_vod = readtable("SLA\Normal\Normal_csv.csv");
-path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
-csv_Stroke = readtable("Stroke\Normal.csv");
-csv_Stroke_vod = readtable("Stroke\Normal\Normal_csv.csv");
+% csv_HC = readtable("Healthy Control\Normal.csv");
+% csv_HC_vod = readtable("Healthy Control\Normal\Normal_csv.csv");
+% path_SLA = fullfile(code_folder, "Data\SLA\Normal");
+% csv_SLA = readtable("SLA\Normal.csv");
+% csv_SLA_vod = readtable("SLA\Normal\Normal_csv.csv");
+% path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
+% csv_Stroke = readtable("Stroke\Normal.csv");
+% csv_Stroke_vod = readtable("Stroke\Normal\Normal_csv.csv");
 %%
-ae_HC=ae_extraction(path_HC, csv_HC);
-ae_SLA=ae_extraction(path_SLA,csv_SLA);
-ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
+% ae_HC=ae_extraction(path_HC, csv_HC);
+% ae_SLA=ae_extraction(path_SLA,csv_SLA);
+% ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
+% %%
+% ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
+% ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
+% ae_Stroke_vod=ae_extraction(path_Stroke, csv_Stroke_vod);
+% %%
+% mean_HC=nozeromean(ae_HC);
+% mean_SLA=nozeromean(ae_SLA);
+% mean_Stroke=nozeromean(ae_Stroke);
 %%
-ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
-ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
-ae_Stroke_vod=ae_extraction(path_Stroke, csv_Stroke_vod);
-%%
-mean_HC=nozeromean(ae_HC);
-mean_SLA=nozeromean(ae_SLA);
-mean_Stroke=nozeromean(ae_Stroke);
-%%
-for i=1:size(ae_HC,1)
-    aux=0;
-    k=0;
-    for j=1:size(ae_HC,2)
-        if ae_HC(i,j)~=0
-            aux=aux+ae_HC(i,j);
-            k=k+1;
-        end
-    end
-    mn(i)=aux/k;
-end
-%%
-mean(mn)
+ar_HC=activation_ratio(path_HC);
 %%
 figure;
 plot(ae);
@@ -101,4 +89,27 @@ function mn = nozeromean(ae)
         mn(i)=aux/k;
     end
     mn=mean(mn);
+end
+%%
+function ar = activation_ratio(path)
+    files = dir(fullfile(path, "*.wav"));
+    for i=1:numel(files)
+        filename=fullfile(path, files(i).name);
+        [y, fs]=audioread(filename);
+        vad=vadsohn(y,fs);
+
+        scale=max(y);
+        hold on
+        figure
+        plot(y);
+        plot(vad*scale);
+        hold off
+        count=0;
+        for j=1:size(vad)
+            if vad(j)==1
+                count=count+1;
+            end
+        end
+        ar(i)=count/size(vad,1);
+    end
 end
