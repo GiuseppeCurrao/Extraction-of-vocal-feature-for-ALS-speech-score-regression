@@ -15,17 +15,16 @@ csv_Stroke = readtable("Stroke\Normal.csv");
 csv_Stroke_vod = readtable("Stroke\Normal\Normal_csv.csv");
 %%
 ae_HC=ae_extraction(path_HC, csv_HC);
+ae_SLA=ae_extraction(path_SLA,csv_SLA);
+ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
 %%
 ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
-%%
-ae_SLA=ae_extraction(path_SLA,csv_SLA);
 ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
-%%
-ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
 ae_Stroke_vod=ae_extraction(path_Stroke, csv_Stroke_vod);
 %%
 mean_HC=nozeromean(ae_HC);
-
+mean_SLA=nozeromean(ae_SLA);
+mean_Stroke=nozeromean(ae_Stroke);
 %%
 for i=1:size(ae_HC,1)
     aux=0;
@@ -95,12 +94,11 @@ function mn = nozeromean(ae)
         k=0;
         for j=1:size(ae,2)
             if ae(i,j)~=0
-                aux=aux+ae_HC(i,j);
+                aux=aux+ae(i,j);
                 k=k+1;
             end
         end
         mn(i)=aux/k;
     end
     mn=mean(mn);
-end
 end
