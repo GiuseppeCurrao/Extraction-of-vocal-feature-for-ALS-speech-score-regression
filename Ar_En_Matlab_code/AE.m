@@ -6,16 +6,26 @@ clc;
 code_folder =pwd;
 path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
 csv_HC = readtable("Healthy Control\Normal.csv");
+csv_HC_vod = readtable("Healthy Control\Normal\Normal_csv.csv");
 path_SLA = fullfile(code_folder, "Data\SLA\Normal");
 csv_SLA = readtable("SLA\Normal.csv");
+csv_SLA_vod = readtable("SLA\Normal\Normal_csv.csv");
 path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
 csv_Stroke = readtable("Stroke\Normal.csv");
+csv_Stroke_vod = readtable("Stroke\Normal\Normal_csv.csv");
 %%
 ae_HC=ae_extraction(path_HC, csv_HC);
 %%
+ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
+%%
 ae_SLA=ae_extraction(path_SLA,csv_SLA);
+ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
 %%
 ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
+ae_Stroke_vod=ae_extraction(path_Stroke, csv_Stroke_vod);
+%%
+mean_HC=nozeromean(ae_HC);
+
 %%
 for i=1:size(ae_HC,1)
     aux=0;
@@ -28,6 +38,8 @@ for i=1:size(ae_HC,1)
     end
     mn(i)=aux/k;
 end
+%%
+mean(mn)
 %%
 figure;
 plot(ae);
@@ -60,15 +72,35 @@ function ae = ae_extraction(path,csv)
         fend=csv{i,3};
         [y,fs] = audioread(file_path);
         y=inten_norm(y(fstart:fend),fs);
-        F=melroot3_extraction(y,fs);
+        try
+            F=melroot3_extraction(y,fs);
+        catch
+            fprintf("melroot3 impossible to extract\n");
+        end
         if isempty(F)
             ae(row, col)=0;
         else
             try
                 ae(row,col)=[artic_ent(F,size(F,1))];
             catch
-                fprintf("File non letto");
+                fprintf("File non letto\n");
             end
         end
     end
+end
+%%
+function mn = nozeromean(ae)
+    for i=1:size(ae,1)
+        aux=0;
+        k=0;
+        for j=1:size(ae,2)
+            if ae(i,j)~=0
+                aux=aux+ae_HC(i,j);
+                k=k+1;
+            end
+        end
+        mn(i)=aux/k;
+    end
+    mn=mean(mn);
+end
 end
