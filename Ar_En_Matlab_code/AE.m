@@ -104,6 +104,10 @@ function ar = activation_ratio(path,csv)
         filename=fullfile(path, files(i).name);
         [y, fs]=audioread(filename);
         vad=vadsohn(y,fs);
+        
+        pp.pr=0.15;
+        vad_th=vadsohn(y,fs,'a', pp.pr);
+
         ind=zeros(size(y));
         for j=1:height(csv)
             name=append(string(csv{j,1}), '.wav');
@@ -116,13 +120,21 @@ function ar = activation_ratio(path,csv)
         figure;
         
         x=linspace(1,numel(y), numel(y));
-        subplot(2,1,1);
+        subplot(3,1,1);
         plot(x,y, 'b', x, vad*scale, 'r');
+        xlim([1, numel(y)]);
         ylim([-(scale+0.1), scale+0.1]);
         xlabel("Frames");
         title("VOD activation over sound");
-        subplot(2,1,2);
+        subplot(3,1,2);
+        plot(x,y, 'b', x, vad_th*scale, 'r');
+        xlim([1, numel(y)]);
+        ylim([-(scale+0.1), scale+0.1]);
+        xlabel("Frames");
+        title("VOD with threshold activation over sound");
+        subplot(3,1,3);
         plot(x,y,'b', x,ind*scale,'r');
+        xlim([1, numel(y)]);
         ylim([-(scale+0.1), scale+0.1]);
         xlabel("Frames");
         title("Vosk activation over sound");
@@ -130,7 +142,10 @@ function ar = activation_ratio(path,csv)
         count=sum(vad);
         ar(1,i)=count/size(vad,1);
 
+        count=sum(vad_th);
+        ar(2,i)=count/size(vad_th,1);
+
         count=sum(ind);
-        ar(2,i)=count/size(ind,1);
+        ar(3,i)=count/size(ind,1);
     end
 end
