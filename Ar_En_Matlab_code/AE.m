@@ -31,9 +31,9 @@ ar_HC=activation_ratio(path_HC, csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA);
 ar_Stroke=activation_ratio(path_Stroke, csv_Stroke);
 %%
-mean(ar_HC)
-mean(ar_SLA)
-mean(ar_Stroke)
+mean(ar_HC,2)
+mean(ar_SLA,2)
+mean(ar_Stroke,2)
 %%
 figure;
 plot(ae);
