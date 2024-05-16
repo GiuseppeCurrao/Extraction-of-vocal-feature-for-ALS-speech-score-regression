@@ -7,6 +7,9 @@ code_folder =pwd;
 path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
 path_SLA = fullfile(code_folder, "Data\SLA\Normal");
 path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
+path_HC_PA=fullfile(code_folder, "Data\Healthy Control\PA");
+path_SLA_PA=fullfile(code_folder, "Data\SLA\PA");
+path_Stroke_PA=fullfile(code_folder, "Data\Stroke\PA");
 %%
 audio_trim(path_HC);
 %%
@@ -14,8 +17,14 @@ audio_trim(path_SLA);
 %%
 audio_trim(path_Stroke);
 %%
+audio_trim(path_HC_PA);
+%%
+audio_trim(path_SLA_PA);
+%%
+audio_trim(path_Stroke_PA);
+%%
 function audio_trim(path)
-    file_csv=fullfile(path, "Normal_csv.csv");
+    file_csv=fullfile(path, "PA_csv.csv");
     if exist(file_csv, 'file')
         fileID=fopen(file_csv, "w");
         fclose(fileID);
@@ -26,6 +35,7 @@ function audio_trim(path)
     for i=1:numel(files)
         filename=fullfile(path, files(i).name);
         [y, fs]=audioread(filename);
+        
         vad=vadsohn(y,fs);
             % Concatenate 0s at the beginning and end of vad
         padded_vad = [0; vad; 0];

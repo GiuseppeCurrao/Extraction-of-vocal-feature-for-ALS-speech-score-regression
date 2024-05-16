@@ -29,6 +29,7 @@ csv_Stroke_vod = readtable("Stroke\Normal\Normal_csv.csv");
 ar_HC=activation_ratio(path_HC, csv_HC);
 %%
 ar_SLA=activation_ratio(path_SLA,csv_SLA);
+%%
 ar_Stroke=activation_ratio(path_Stroke, csv_Stroke);
 %%
 mean(ar_HC,2)
@@ -103,10 +104,17 @@ function ar = activation_ratio(path,csv)
     for i=1:numel(files)
         filename=fullfile(path, files(i).name);
         [y, fs]=audioread(filename);
+        y=int
         vad=vadsohn(y,fs);
         
-        pp.pr=0.15;
-        vad_th=vadsohn(y,fs,'a', pp.pr);
+        aux=zeros(size(y));
+        threshold=std(y);
+        for j=1:size(y,1)
+            if y(j)>=threshold
+                aux(j)=1;
+            end
+        end
+        vad_th=vadsohn(y.*aux,fs);
 
         ind=zeros(size(y));
         for j=1:height(csv)
