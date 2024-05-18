@@ -20,9 +20,9 @@ csv_Stroke = readtable("Stroke\Normal.csv");
 csv_Stroke_vod = readtable("Stroke\Normal\table.csv");
 csv_Stroke_vod_th = readtable("Stroke\Normal\table_th.csv");
 %%
-% ae_HC=ae_extraction(path_HC, csv_HC);
-% ae_SLA=ae_extraction(path_SLA,csv_SLA);
-% ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
+ae_HC=ae_extraction(path_HC, csv_HC);
+ae_SLA=ae_extraction(path_SLA,csv_SLA);
+ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
 % %%
 % ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
 % ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
@@ -30,11 +30,11 @@ csv_Stroke_vod_th = readtable("Stroke\Normal\table_th.csv");
 % %%
 % ae_HC_vod_th=ae_extraction(path_HC, csv_HC_vod_th);
 % ae_SLA_vod_th=ae_extraction(path_SLA, csv_SLA_vod_th);
-ae_Stroke_vod_th=ae_extraction(path_Stroke, csv_Stroke_vod_th);
+%ae_Stroke_vod_th=ae_extraction(path_Stroke, csv_Stroke_vod_th);
 %%
-% mean_HC=nozeromean(ae_HC);
-% mean_SLA=nozeromean(ae_SLA);
-% mean_Stroke=nozeromean(ae_Stroke);
+mean_HC=nozeromean(ae_HC);
+mean_SLA=nozeromean(ae_SLA);
+mean_Stroke=nozeromean(ae_Stroke);
 %%
 ar_HC=activation_ratio(path_HC, csv_HC_vod,csv_HC_vod_th,csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA_vod,csv_SLA_vod_th,csv_SLA);
@@ -83,9 +83,10 @@ function ae = ae_extraction(path,csv)
         [y,fs] = audioread(file_path);
         y=inten_norm(y(fstart:fend),fs);
         try
-            F=melroot3_extraction(y,fs);
+            %F=melroot3_extraction(y,fs);
+            F=mfcc(y,fs);
         catch
-            fprintf("melroot3 impossible to extract\n");
+            fprintf("Parameters impossible to extract\n");
         end
         if isempty(F)
             ae(row, col)=0;
