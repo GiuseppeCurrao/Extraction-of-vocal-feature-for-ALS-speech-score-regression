@@ -30,10 +30,61 @@ ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
 % %%
 % ae_HC_vod_th=ae_extraction(path_HC, csv_HC_vod_th);
 % ae_SLA_vod_th=ae_extraction(path_SLA, csv_SLA_vod_th);
-%ae_Stroke_vod_th=ae_extraction(path_Stroke, csv_Stroke_vod_th);
+% ae_Stroke_vod_th=ae_extraction(path_Stroke, csv_Stroke_vod_th);
+%%
+count=[];
+countS=[];
+str="";
+j=0;
+for i=1:size(csv_HC,1)
+    file_name=string(csv_HC{i,1});
+    if ~strcmp(str,file_name)
+        j=j+1;
+        count(j)=1;
+        str=file_name;
+    else
+        count(j)=count(j)+1;
+    end
+end
+j=0;
+for i=1:size(csv_SLA,1)
+    file_name=string(csv_SLA{i,1});
+    if ~strcmp(str,file_name)
+        j=j+1;
+        countS(j)=1;
+        str=file_name;
+    else
+        countS(j)=countS(j)+1;
+    end
+    
+end
+%%
+figure;
+sz=80;
+hold on
+for i=1:size(ae_HC,1)
+    ind=find(ae_HC(i,:)~=0);
+    aux = ae_HC(i, ind);
+    yaux = csv_HC{(i-1)*count(i)+1:(i)*count(i),4};
+    h=scatter(aux,yaux,sz, "filled");
+    color=get(h, 'CData');
+    scatter(mean(aux), mean(yaux),sz, color, "filled", "diamond");
+    xlim([240 max(aux)]);
+end
+%%
+figure;
+hold on
+for i=1:size(ae_SLA,1)
+    ind=find(ae_SLA(i,:)~=0);
+    aux = ae_SLA(i, ind);
+    yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),4};
+    h=scatter(aux,yaux,sz);
+    color=get(h, 'CData');
+    scatter(mean(aux), mean(yaux),sz, color, "diamond");
+end
 %%
 mean_HC=nozeromean(ae_HC);
-mean_SLA=nozeromean(ae_SLA);
+mean_SLA=nozeromean(a_e_SLA);
 mean_Stroke=nozeromean(ae_Stroke);
 %%
 ar_HC=activation_ratio(path_HC, csv_HC_vod,csv_HC_vod_th,csv_HC);
@@ -82,14 +133,15 @@ function ae = ae_extraction(path,csv)
         fend=csv{i,3};
         [y,fs] = audioread(file_path);
         y=inten_norm(y(fstart:fend),fs);
+        F = [];
         try
-            %F=melroot3_extraction(y,fs);
-            F=mfcc(y,fs);
+            F=melroot3_extraction(y,fs);
+            %F=mfcc(y,fs);
         catch
             fprintf("Parameters impossible to extract\n");
         end
         if isempty(F)
-            ae(row, col)=0;
+            ae(row, col)=-1;
         else
             try
                 ae(row,col)=[artic_ent(F,size(F,1))];
