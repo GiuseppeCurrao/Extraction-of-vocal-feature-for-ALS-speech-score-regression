@@ -15,22 +15,23 @@ csv_SLA = readtable("SLA\Normal.csv");
 csv_SLA_vod = readtable("SLA\Normal\table.csv");
 csv_SLA_vod_th = readtable("SLA\Normal\table_th.csv");
 
-path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
-csv_Stroke = readtable("Stroke\Normal.csv");
-csv_Stroke_vod = readtable("Stroke\Normal\table.csv");
-csv_Stroke_vod_th = readtable("Stroke\Normal\table_th.csv");
 %%
 ae_HC=ae_extraction(path_HC, csv_HC);
 ae_SLA=ae_extraction(path_SLA,csv_SLA);
-ae_Stroke=ae_extraction(path_Stroke,csv_Stroke);
-% %%
-% ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
-% ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
-% ae_Stroke_vod=ae_extraction(path_Stroke, csv_Stroke_vod);
-% %%
-% ae_HC_vod_th=ae_extraction(path_HC, csv_HC_vod_th);
-% ae_SLA_vod_th=ae_extraction(path_SLA, csv_SLA_vod_th);
-% ae_Stroke_vod_th=ae_extraction(path_Stroke, csv_Stroke_vod_th);
+%%
+ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
+ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
+%%
+ae_HC_vod_th=ae_extraction(path_HC, csv_HC_vod_th);
+ae_SLA_vod_th=ae_extraction(path_SLA, csv_SLA_vod_th);
+%%
+mea_HC=compute_mean(ae_HC);
+mea_HC_vod=compute_mean(ae_HC_vod);
+mea_HC_vod_th=compute_mean(ae_HC_vod_th);
+
+mea_SLA=compute_mean(ae_SLA);
+mea_SLA_vod=compute_mean(ae_SLA_vod);
+mea_SLA_vod_th=compute_mean(ae_SLA_vod_th);
 %%
 count=[];
 countS=[];
@@ -133,6 +134,18 @@ ae = artic_ent(F,200); % Set the second parameter based on the length of
                        % your data or the minimum length of the data in
                        % your dataset.
 %%
+function m=compute_mean(ar)
+    m=0;
+    for i=1:size(ar,1)
+        ind=find(ar(i,:)~=0);
+        aux=ar(i,ind);
+        ind=find(aux(:)~=-1);
+        ax=aux(ind);
+        m=m+mean(ax(:));
+    end   
+    m=m/size(ar,1);
+end
+%%
 function ae = ae_extraction(path,csv)
     str="";
     row=0;
@@ -169,21 +182,6 @@ function ae = ae_extraction(path,csv)
             end
         end
     end
-end
-%%
-function mn = nozeromean(ae)
-    for i=1:size(ae,1)
-        aux=0;
-        k=0;
-        for j=1:size(ae,2)
-            if ae(i,j)~=0
-                aux=aux+ae(i,j);
-                k=k+1;
-            end
-        end
-        mn(i)=aux/k;
-    end
-    mn=mean(mn);
 end
 %%
 function ar = activation_ratio(path,csv, csv_th, varargin)
