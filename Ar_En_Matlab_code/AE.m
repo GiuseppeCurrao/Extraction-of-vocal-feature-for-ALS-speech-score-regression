@@ -56,7 +56,6 @@ for i=1:size(csv_SLA,1)
     else
         countS(j)=countS(j)+1;
     end
-    
 end
 %%
 figure;
@@ -66,25 +65,45 @@ for i=1:size(ae_HC,1)
     ind=find(ae_HC(i,:)~=0);
     aux = ae_HC(i, ind);
     yaux = csv_HC{(i-1)*count(i)+1:(i)*count(i),4};
-    h=scatter(aux,yaux,sz, "filled");
-    color=get(h, 'CData');
-    scatter(mean(aux), mean(yaux),sz, color, "filled", "diamond");
+    scatter(mean(aux), mean(yaux),sz,"blue", "filled");
     xlim([240 max(aux)]);
 end
 %%
-figure;
-hold on
 for i=1:size(ae_SLA,1)
     ind=find(ae_SLA(i,:)~=0);
     aux = ae_SLA(i, ind);
     yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),4};
-    h=scatter(aux,yaux,sz);
-    color=get(h, 'CData');
-    scatter(mean(aux), mean(yaux),sz, color, "diamond");
+    scatter(mean(aux), mean(yaux),sz, "red","filled");
+    legend("HC", "SLA");
 end
+hold off
+%%
+figure;
+hold on
+for i=1:size(ae_HC,1)
+    aux = csv_HC{(i-1)*count(i)+1:(i)*count(i),4};
+    yaux = csv_HC{(i-1)*count(i)+1:(i)*count(i),5};
+    % h=scatter(aux, yaux,sz, "filled");
+    % color = get(h, 'CData');
+    scatter(mean(aux), mean(yaux),sz, "filled", "red");
+end
+
+for i=1:size(ae_SLA,1)
+    aux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),4};
+    yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),5};
+    % h=scatter(aux, yaux,sz, "diamond", "filled");
+    % color = get(h, 'CData');
+    scatter(mean(aux), mean(yaux),sz,"blue", "diamond", "filled");
+end
+legend("HC", "SLA");
+ylabel("Word Error Rate");
+xlabel("Confidence");
+%%
+data=[mean(csv_HC{:,5}), mean(csv_SLA{:,5})];
+bar(data);
 %%
 mean_HC=nozeromean(ae_HC);
-mean_SLA=nozeromean(a_e_SLA);
+mean_SLA=nozeromean(ae_SLA);
 mean_Stroke=nozeromean(ae_Stroke);
 %%
 ar_HC=activation_ratio(path_HC, csv_HC_vod,csv_HC_vod_th,csv_HC);
