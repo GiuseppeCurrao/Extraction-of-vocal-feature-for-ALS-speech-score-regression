@@ -4,18 +4,14 @@ clc;
 %%
 % You may need to add voicebox (a Matlab toolbox) into your path
 code_folder =pwd;
-path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
-path_SLA = fullfile(code_folder, "Data\SLA\Normal");
-path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
-path_HC_PA=fullfile(code_folder, "Data\Healthy Control\PA");
+path_HC = fullfile(code_folder, "Data\Healthy Control\PATAKA");
+path_SLA = fullfile(code_folder, "Data\SLA\PATAKA");
 %%
 audio_trim(path_HC,1);
 audio_trim(path_SLA,1);
-audio_trim(path_Stroke,1);
 %%
 audio_trim(path_HC,2);
 audio_trim(path_SLA,2);
-audio_trim(path_Stroke,2);
 %%
 audio_trim(path_HC_PA,1);
 audio_trim(path_SLA_PA,1);
