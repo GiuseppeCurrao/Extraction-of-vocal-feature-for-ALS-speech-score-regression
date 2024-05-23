@@ -8,8 +8,6 @@ path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
 path_SLA = fullfile(code_folder, "Data\SLA\Normal");
 path_Stroke = fullfile(code_folder, "Data\Stroke\Normal");
 path_HC_PA=fullfile(code_folder, "Data\Healthy Control\PA");
-path_SLA_PA=fullfile(code_folder, "Data\SLA\PA");
-path_Stroke_PA=fullfile(code_folder, "Data\Stroke\PA");
 %%
 audio_trim(path_HC,1);
 audio_trim(path_SLA,1);

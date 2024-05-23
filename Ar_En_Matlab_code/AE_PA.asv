@@ -26,9 +26,7 @@ ae_SLA_th = ae_extraction(path_SLA, csv_SLA_th);
 [mean_hc_th, mp_hc_th]=compute_mean(ae_HC_th);
 %%
 [mean_sla, mp_sla]=compute_mean(ae_SLA);
-[mean_sla_th, mp_sla_th]=compute_mean(ae_SLA_th);
-%%
-for i=1:ar_HC
+[m]compute_mean(ae_SLA_th)
 %%
 function [varargout]=compute_mean(ar)
     m=0;
