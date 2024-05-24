@@ -3,7 +3,7 @@ close all;
 clc;
 %%
 % You may need to add voicebox (a Matlab toolbox) into your path
-code_folder =pwd;
+code_folder = pwd;
 path_HC = fullfile(code_folder, "Data\Healthy Control\PA");
 csv_HC = readtable("Healthy Control\PA\table.csv");
 csv_HC_th = readtable("Healthy Control\PA\table_th.csv");
@@ -11,7 +11,6 @@ csv_HC_th = readtable("Healthy Control\PA\table_th.csv");
 path_SLA = fullfile(code_folder, "Data\SLA\PA");
 csv_SLA = readtable("SLA\PA\table.csv");
 csv_SLA_th = readtable("SLA\PA\table_th.csv");
-
 %%
 ar_HC=activation_ratio(path_HC, csv_HC, csv_HC_th);
 ar_SLA=activation_ratio(path_SLA, csv_SLA,csv_SLA_th);
