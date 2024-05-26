@@ -18,9 +18,7 @@ for i=1:size(csv,1)
     for j=1:size(hc_w,1)
         [~, name, ex] = fileparts(csv{i,1});
         if contains(lower(name),lower(hc_w{j,1}))
-            if ~contains(lower(name),'pataka') || (contains(lower(name), 'pataka') && contains(lower(hc_w{j,1}), 'pataka'))
-                k=1;
-            end
+            k=1;
         end
     end
     if k==0
@@ -49,7 +47,7 @@ for i=1:size(csv_sla,1)
             sla_w{j,1}=strrep(sla_w{j,1},'_al','');
         end
         if contains(lower(name),lower(sla_w{j,1}))
-            if ~contains(lower(name),'pataka') || (contains(lower(name), 'pataka') && contains(lower(sla_w{j,1}), 'pataka'))
+            if ~contains(lower(name),'pataka') || (contains(lower(name), 'pataka') && contains(sla{}))
             k=1;
             end
         end
