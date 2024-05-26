@@ -17,9 +17,9 @@ end
 
 F1=melbank_r3(y,fs,'a',12,160,80); % Extract MelRoot3 from each frame of speech. frame length is 20ms with 10ms overlap. 
 stack_F = [];
-for i = 1:8:size(F1,2)-7
-    mtx = F1(:,i:i+7);
-    vec = reshape(mtx,1,12*8);
+for i = 1:12:size(F1,2)-11
+    mtx = F1(:,i:i+11);
+    vec = reshape(mtx,1,12*12);
     stack_F = [stack_F;vec];
 end
 
