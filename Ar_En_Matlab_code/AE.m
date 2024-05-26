@@ -7,30 +7,30 @@ code_folder =pwd;
 
 path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
 csv_HC = readtable("Healthy Control\Normal.csv");
-csv_HC_vod = readtable("Healthy Control\Normal\table.csv");
-csv_HC_vod_th = readtable("Healthy Control\Normal\table_th.csv");
+csv_HC_vad = readtable("Healthy Control\Normal\table.csv");
+csv_HC_vad_th = readtable("Healthy Control\Normal\table_th.csv");
 
 path_SLA = fullfile(code_folder, "Data\SLA\Normal");
 csv_SLA = readtable("SLA\Normal.csv");
-csv_SLA_vod = readtable("SLA\Normal\table.csv");
-csv_SLA_vod_th = readtable("SLA\Normal\table_th.csv");
+csv_SLA_vad = readtable("SLA\Normal\table.csv");
+csv_SLA_vad_th = readtable("SLA\Normal\table_th.csv");
 %%
 ae_HC=ae_extraction(path_HC, csv_HC);
 ae_SLA=ae_extraction(path_SLA,csv_SLA);
 %%
-ae_HC_vod=ae_extraction(path_HC, csv_HC_vod);
-ae_SLA_vod=ae_extraction(path_SLA, csv_SLA_vod);
+ae_HC_vad=ae_extraction(path_HC, csv_HC_vad);
+ae_SLA_vad=ae_extraction(path_SLA, csv_SLA_vad);
 %%
-ae_HC_vod_th=ae_extraction(path_HC, csv_HC_vod_th);
-ae_SLA_vod_th=ae_extraction(path_SLA, csv_SLA_vod_th);
+ae_HC_vad_th=ae_extraction(path_HC, csv_HC_vad_th);
+ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th);
 %%
 mea_HC=compute_mean(ae_HC);
-mea_HC_vod=compute_mean(ae_HC_vod);
-mea_HC_vod_th=compute_mean(ae_HC_vod_th);
+mea_HC_vad=compute_mean(ae_HC_vad);
+mea_HC_vad_th=compute_mean(ae_HC_vad_th);
 
 mea_SLA=compute_mean(ae_SLA);
-mea_SLA_vod=compute_mean(ae_SLA_vod);
-mea_SLA_vod_th=compute_mean(ae_SLA_vod_th);
+mea_SLA_vad=compute_mean(ae_SLA_vad);
+mea_SLA_vad_th=compute_mean(ae_SLA_vad_th);
 %%
 count=[];
 countS=[];
@@ -63,10 +63,10 @@ sz=80;
 hold on
 for i=1:size(ae_HC,1)
     ind=find(ae_HC(i,:)~=0);
-    aux = ae_HC(i, ind);
+    aux = ae_HC_vad(i, ind);
     yaux = csv_HC{(i-1)*count(i)+1:(i)*count(i),4};
     scatter(mean(aux), mean(yaux),sz,"blue", "filled");
-    xlim([240 max(aux)]);
+    xlim([min(aux) max(aux)]);
 end
 %%
 for i=1:size(ae_SLA,1)
@@ -74,9 +74,11 @@ for i=1:size(ae_SLA,1)
     aux = ae_SLA(i, ind);
     yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),4};
     scatter(mean(aux), mean(yaux),sz, "red","filled");
-    legend("HC", "SLA");
 end
 hold off
+legend("SLA");
+ylabel("Word Error Rate");
+xlabel("Articolation Entropy");
 %%
 figure;
 hold on
@@ -106,8 +108,8 @@ mean_HC=nozeromean(ae_HC);
 mean_SLA=nozeromean(ae_SLA);
 mean_Stroke=nozeromean(ae_Stroke);
 %%
-ar_HC=activation_ratio(path_HC, csv_HC_vod,csv_HC_vod_th,csv_HC);
-ar_SLA=activation_ratio(path_SLA,csv_SLA_vod,csv_SLA_vod_th,csv_SLA);
+ar_HC=activation_ratio(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
+ar_SLA=activation_ratio(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 ar_Stroke=activation_ratio(path_Stroke, csv_Stroke_vod,csv_Stroke_vod_th, csv_Stroke);
 %%
 data = [mean(ar_HC,2), mean(ar_SLA,2), mean(ar_Stroke,2)];
@@ -124,15 +126,6 @@ legend("HC", "SLA", "Stroke");
 figure;
 plot(ae);
 %%
-[y,fs] = audioread('the path to your speech sample');
-vad = vadsohn(y,fs);
-y = y(vad==1);
-y_nor = inten_norm(y,fs);
-F = melroot3_extraction(y_nor,16000);
-ae = artic_ent(F,200); % Set the second parameter based on the length of 
-                       % your data or the minimum length of the data in
-                       % your dataset.
-%%
 function m=compute_mean(ar)
     m=0;
     for i=1:size(ar,1)
@@ -144,5 +137,3 @@ function m=compute_mean(ar)
     end   
     m=m/size(ar,1);
 end
-%%
-

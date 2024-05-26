@@ -30,7 +30,7 @@ function ae = ae_extraction(path,csv)
             try
                 ae(row,col)=[artic_ent(F,size(F,1))];
             catch
-                fprintf("File non letto\n");
+                fprintf("Articulation entropy not computed\n");
             end
         end
     end
