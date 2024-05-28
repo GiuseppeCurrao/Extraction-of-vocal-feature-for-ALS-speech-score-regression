@@ -1,4 +1,4 @@
-function ae = ae_extraction(path,csv)
+function ae = ae_extraction(path,csv, varargin)
     str="";
     row=0;
     col=0;
@@ -18,12 +18,33 @@ function ae = ae_extraction(path,csv)
         [y,fs] = audioread(file_path);
         y=inten_norm(y(fstart:fend),fs);
         F = [];
-        try
-            F=melroot3_extraction(y,fs);
-            %F=mfcc(y,fs);
-        catch
-            fprintf("Parameters impossible to extract\n");
+
+        if length(varargin)==2
+            try
+                F=melroot3_extraction(y,fs, varargin{1}, varargin{2});
+            catch
+                fprintf("Parameters impossible to extract\n");
+            end
+
         end
+
+        if length(varargin)==1
+            try
+                F=melroot3_extraction(y,fs, varargin{1});
+            catch
+                fprintf("Parameters impossible to extract\n");
+            end
+        end
+        
+        if length(varargin)==0
+            try
+                F=melroot3_extraction(y,fs);
+            catch
+                fprintf("Parameters impossible to extract\n");
+            end
+        end
+        %F=mfcc(y,fs);
+
         if isempty(F)
             ae(row, col)=-1;
         else
