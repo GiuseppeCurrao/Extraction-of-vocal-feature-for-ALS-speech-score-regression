@@ -15,14 +15,14 @@ csv_SLA = readtable("SLA\Normal.csv");
 csv_SLA_vad = readtable("SLA\Normal\table.csv");
 csv_SLA_vad_th = readtable("SLA\Normal\table_th.csv");
 %% Articulation entropy for the three segmentation methods 
-ae_HC=ae_extraction(path_HC, csv_HC);
-ae_SLA=ae_extraction(path_SLA,csv_SLA);
+ae_HC=ae_extraction(path_HC, csv_HC,10,5);
+ae_SLA=ae_extraction(path_SLA,csv_SLA,10,5);
 
-ae_HC_vad=ae_extraction(path_HC, csv_HC_vad);
-ae_SLA_vad=ae_extraction(path_SLA, csv_SLA_vad);
+ae_HC_vad=ae_extraction(path_HC, csv_HC_vad,10,5);
+ae_SLA_vad=ae_extraction(path_SLA, csv_SLA_vad,10,5);
 
-ae_HC_vad_th=ae_extraction(path_HC, csv_HC_vad_th);
-ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th);
+ae_HC_vad_th=ae_extraction(path_HC, csv_HC_vad_th,10,5);
+ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
 %%
 mea_HC=compute_mean(ae_HC);
 mea_HC_vad=compute_mean(ae_HC_vad);
@@ -59,6 +59,7 @@ hold off
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
 ylabel("Word Error Rate");
 xlabel("Articolation Entropy Vosk");
+title("Scatterplot for BBP files using VOSK")
 %%
 [count, countS] = count_csv(csv_HC_vad, csv_SLA_vad); 
 mean_hc_wr = [mean_hc_wr(1:7), 1, mean_hc_wr(8:9)];
@@ -81,6 +82,7 @@ hold off
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
 ylabel("Word Error Rate");
 xlabel("Articolation Entropy VAD");
+title("Scatterplot for BBP files using VAD")
 %%
 [count, countS] = count_csv(csv_HC_vad_th, csv_SLA_vad_th); 
 figure;
@@ -102,6 +104,7 @@ hold off
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
 ylabel("Word Error Rate");
 xlabel("Articolation Entropy VAD with threshold");
+title("Scatterplot for BBP files using VAD thresholded")
 %%
 [count, countS] = count_csv(csv_HC,csv_SLA);
 figure;
@@ -115,11 +118,41 @@ end
 for i=1:size(ae_SLA,1)
     aux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),4};
     yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),5};
-    scatter_SLA=scatter(mean(aux), mean(yaux),sz,"blue", "diamond", "filled");
+    scatter_SLA=scatter(mean(aux), mean(yaux),sz,"blue", "filled");
 end
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
 ylabel("Word Error Rate");
 xlabel("Confidence");
+title("Scatterplot for BBP files using VOSK")
+%%
+figure;
+hold on
+for i=1:size(ae_HC,1)
+    ind=find(ae_HC(i,:)~=0);
+    aux = ae_HC(i, ind);
+    scatter_HC = histogram(aux, 15);
+end
+figure;
+hold on
+for i=1:size(ae_SLA,1)
+    ind=find(ae_SLA(i,:)~=0);
+    aux = ae_SLA(i, ind);
+    scatter_SLA = histogram(aux, 15);
+end
+%%
+aux = [];
+for i=1:size(ae_HC,1)
+    ind=find(ae_HC(i,:)~=0);
+    aux = [aux ae_HC(i, ind)];
+end
+auxs =[];
+for i=1:size(ae_SLA,1)
+    ind=find(ae_SLA(i,:)~=0);
+    auxs = [auxs ae_SLA(i, ind)];
+end
+[h, p] = kstest2(aux, auxs);
+disp(['h = ', num2str(h)]);
+disp(['p-value = ', num2str(p)]);
 %%
 ar_HC=activation_ratio(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);

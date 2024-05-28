@@ -1,10 +1,20 @@
-function [ stack_F ] = melroot3_extraction( y,fs )
+function [ stack_F ] = melroot3_extraction( y,fs,varargin )
 %Extract MelRoot3 features and stack with a 160ms window
 %Input:     y:  speech signal
 %           fs: sampling rate (Hz)
 %Output:    F:  MelRoot3 features, colums correspond to the dimension of
 %               features
 
+if length(varargin)==2
+    win=varargin{1}*16;
+    ov=varargin{2}*16;
+elseif varargin==1
+    win= varargin{1}*16;
+    ov=160;
+else
+    win=320;
+    ov=160;
+end
 
 if size(y,2)~=1
     y = y(:,1);
@@ -15,7 +25,7 @@ if fs~=16000
 end
 
 
-F1=melbank_r3(y,fs,'a',12,160,80); % Extract MelRoot3 from each frame of speech. frame length is 20ms with 10ms overlap. 
+F1=melbank_r3(y,fs,'a',12,win,ov); % Extract MelRoot3 from each frame of speech. frame length is 20ms with 10ms overlap. 
 stack_F = [];
 for i = 1:12:size(F1,2)-11
     mtx = F1(:,i:i+11);
