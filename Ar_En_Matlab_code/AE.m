@@ -24,13 +24,13 @@ ae_SLA_vad=ae_extraction(path_SLA, csv_SLA_vad,10,5);
 ae_HC_vad_th=ae_extraction(path_HC, csv_HC_vad_th,10,5);
 ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
 %%
-mea_HC=compute_mean(ae_HC);
-mea_HC_vad=compute_mean(ae_HC_vad);
-mea_HC_vad_th=compute_mean(ae_HC_vad_th);
+[mn_HC, std_HC]=compute_mean_std(ae_HC);
+[mn_HC_vad, std_HC_vad]=compute_mean_std(ae_HC_vad);
+[mn_HC_vad_th, std_HC_vad_th]=compute_mean_std(ae_HC_vad_th);
 
-mea_SLA=compute_mean(ae_SLA);
-mea_SLA_vad=compute_mean(ae_SLA_vad);
-mea_SLA_vad_th=compute_mean(ae_SLA_vad_th);
+[mn_SLA, std_SLA]=compute_mean_std(ae_SLA);
+[mn_SLA_vad, std_SLA_vad]=compute_mean_std(ae_SLA_vad);
+[mn_SLA_vad_th, std_SLA_vad_th]=compute_mean_std(ae_SLA_vad_th);
 %%
 [count, countS] = count_csv(csv_HC,csv_SLA);
 figure;
@@ -61,7 +61,6 @@ ylabel("Word Error Rate");
 xlabel("Articolation Entropy Vosk");
 title("Scatterplot for BBP files using VOSK")
 %%
-[count, countS] = count_csv(csv_HC_vad, csv_SLA_vad); 
 mean_hc_wr = [mean_hc_wr(1:7), 1, mean_hc_wr(8:9)];
 figure;
 sz=80;
@@ -84,7 +83,6 @@ ylabel("Word Error Rate");
 xlabel("Articolation Entropy VAD");
 title("Scatterplot for BBP files using VAD")
 %%
-[count, countS] = count_csv(csv_HC_vad_th, csv_SLA_vad_th); 
 figure;
 sz=80;
 hold on
@@ -154,6 +152,42 @@ end
 disp(['h = ', num2str(h)]);
 disp(['p-value = ', num2str(p)]);
 %%
+aux = [];
+for i=1:size(ae_HC_vad,1)
+    ind=find(ae_HC_vad(i,:)~=0);
+    a = ae_HC_vad(i, ind);
+    ind = find(a~=-1);
+    aux = [aux a(ind)];
+end
+auxs =[];
+for i=1:size(ae_SLA_vad,1)
+    ind=find(ae_SLA_vad(i,:)~=0);
+    a = ae_SLA_vad(i, ind);
+    ind = find(a~=-1);
+    auxs = [auxs a(ind)];
+end
+[h, p] = kstest2(aux, auxs);
+disp(['h = ', num2str(h)]);
+disp(['p-value = ', num2str(p)]);
+%%
+aux = [];
+for i=1:size(ae_HC_vad_th,1)
+    ind=find(ae_HC_vad_th(i,:)~=0);
+    a = ae_HC_vad_th(i, ind);
+    ind = find(a~=-1);
+    aux = [aux a(ind)];
+end
+auxs =[];
+for i=1:size(ae_SLA_vad_th,1)
+    ind=find(ae_SLA_vad_th(i,:)~=0);
+    a = ae_SLA_vad_th(i, ind);
+    ind = find(a~=-1);
+    auxs = [auxs a(ind)];
+end
+[h, p] = kstest2(aux, auxs);
+disp(['h = ', num2str(h)]);
+disp(['p-value = ', num2str(p)]);
+%%
 ar_HC=activation_ratio(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 %%
@@ -192,6 +226,19 @@ function m=compute_mean(ar)
         m=m+mean(ax(:));
     end   
     m=m/size(ar,1);
+end
+%%
+function [m, s] = compute_mean_std(ar)
+    m=[];
+    s=[];
+    for i=1:size(ar,1)
+        ind=find(ar(i,:)~=0);
+        aux=ar(i,ind);
+        ind=find(aux(:)~=-1);
+        ax=aux(ind);
+        m=[m mean(ax(:))];
+        s=[s std(ax)];
+    end   
 end
 %%
 function [count, countS] = count_csv(csv_HC, csv_SLA)
