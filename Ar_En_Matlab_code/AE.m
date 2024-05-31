@@ -37,23 +37,25 @@ figure;
 sz=80;
 mean_hc_wr = [];
 mean_sla_wr = [];
-
+sum=1;
 hold on
 for i=1:size(ae_HC,1)
     ind=find(ae_HC(i,:)~=0);
     aux = ae_HC(i, ind);
-    yaux = csv_HC{(i-1)*count(i)+1:(i)*count(i),4};
+    yaux = csv_HC{sum:sum+count(i)-1,5};
     mean_hc_wr(i)= mean(yaux);
     scatter_HC = scatter(mean(aux), mean(yaux),sz,"blue", "filled");
     xlim([min(aux) max(aux)]);
+    sum=sum+count(i);
 end
-
+sum=1;
 for i=1:size(ae_SLA,1)
     ind=find(ae_SLA(i,:)~=0);
     aux = ae_SLA(i, ind);
-    yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),4};
+    yaux = csv_SLA{sum:sum+countS(i)-1,5};
     mean_sla_wr(i)=mean(yaux);
     scatter_SLA = scatter(mean(aux), mean(yaux),sz, "red","filled");
+    sum=sum+countS(i);
 end
 hold off
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
