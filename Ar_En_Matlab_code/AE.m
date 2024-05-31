@@ -191,7 +191,7 @@ disp(['p-value = ', num2str(p)]);
 %that the words are segmentented for SLA, while entire sentences for HC
 ar_HC=activation_ratio(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
-%%
+
 data = [mean(ar_HC,2), mean(ar_SLA,2)];
 bar(data);
 labels = {'VAD', 'VAD with threshold', 'Vosk'};
@@ -205,7 +205,7 @@ legend("HC", "SLA");
 %% Activation frequency
 af_HC=activation_frequency(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 af_SLA=activation_frequency(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
-%%
+
 data = [mean(af_HC,2), mean(af_SLA,2)];
 bar(data);
 labels = {'VAD', 'VAD with threshold', 'Vosk'};
@@ -216,6 +216,29 @@ set(gca, 'XTickLabel', labels);
 xlabel('Segmentation methods');
 ylabel('Mean activation frequency');
 legend("HC", "SLA");
+%% Boxplot of the various features
+%Articulation entropy
+boxae(ae_HC, ae_SLA, "VOSK", code_folder);
+boxae(ae_HC_vad, ae_SLA_vad, "VAD", code_folder);
+boxae(ae_HC_vad_th, ae_SLA_vad_th, "VAD with th",code_folder);
+
+%Confidence
+figure;
+boxplot([csv_HC{:,4}; csv_SLA{:,4}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
+labels = {'HC', 'SLA'};
+set(gca, 'XTickLabel', labels);
+ylabel('Confidence');
+title("Confidence");
+saveas(gcf, fullfile(code_folder,"Figures\Confidence.png"));
+
+%WER
+figure;
+boxplot([csv_HC{:,5}; csv_SLA{:,5}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
+labels = {'HC', 'SLA'};
+set(gca, 'XTickLabel', labels);
+ylabel('Word Error Rate');
+title("Word Error Rate");
+saveas(gcf, fullfile(code_folder,"Figures\Word Error Rate.png"));
 %%
 function m=compute_mean(ar)
     m=0;
@@ -268,4 +291,32 @@ function [count, countS] = count_csv(csv_HC, csv_SLA)
             countS(j)=countS(j)+1;
         end
     end
+end
+%%
+function [] = boxae(ae_hc, ae_sla, name, folder)
+    ind = find(ae_hc~=0);
+    ae=ae_hc(ind);
+    ind = find(ae~=-1);
+    ae=ae(ind);
+    ae=ae(:);
+
+    ind=find(ae_sla~=0);
+    ae_s= ae_sla(ind);
+    ind=find(ae_s~=-1);
+    ae_s=ae_s(ind);
+    ae_s=ae_s(:);
+
+    path = fullfile(folder, "Figures\");
+    file_name = sprintf("Boxplot of articulation entropy for %s segmentation", name);
+    file_path = fullfile(path, file_name);
+    file_path = strcat(file_path, '.png');
+
+    figure;
+    boxplot([ae(:); ae_s(:)], [zeros(size(ae,1),1); 1+zeros(size(ae_s,1),1)]);
+    title(file_name);
+    labels = {'HC', 'SLA'};
+    set(gca, 'XTickLabel', labels);
+    ylabel('Articulation Entropy');
+    
+    saveas(gcf, file_path);
 end
