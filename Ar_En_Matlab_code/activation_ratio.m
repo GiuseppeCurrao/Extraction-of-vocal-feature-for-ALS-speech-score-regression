@@ -29,11 +29,11 @@ function ar = activation_ratio(path,csv, csv_th, varargin)
         
         if length(varargin)>=1
             ind_vosk=zeros(size(y));
-            csv=varargin{1};
-            for j=1:height(csv)
-                name=append(string(csv{j,1}), '.wav');
+            csv_vosk=varargin{1};
+            for j=1:height(csv_vosk)
+                name=append(string(csv_vosk{j,1}), '.wav');
                 if strcmp(name, files(i).name)
-                    ind_vosk(csv{j,2}:csv{j,3})=1;
+                    ind_vosk(csv_vosk{j,2}:csv_vosk{j,3})=1;
                 end
             end
             count=sum(ind_vosk);

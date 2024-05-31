@@ -32,10 +32,9 @@ ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
 [mn_SLA, std_SLA]=compute_mean_std(ae_SLA);
 [mn_SLA_vad, std_SLA_vad]=compute_mean_std(ae_SLA_vad);
 [mn_SLA_vad_th, std_SLA_vad_th]=compute_mean_std(ae_SLA_vad_th);
-%% Scatterplot AE/WER
+%%
 [count, countS] = count_csv(csv_HC,csv_SLA);
 figure;
-subplot(2,4,[1 2]);
 sz=80;
 mean_hc_wr = [];
 mean_sla_wr = [];
@@ -64,16 +63,14 @@ legend([scatter_HC, scatter_SLA],"HC", "SLA");
 ylabel("Confidence");
 xlabel("Articolation Entropy Vosk");
 title("Scatterplot for BBP files using VOSK")
-
+%%
 mean_hc_wr = [mean_hc_wr(1:7), 1, mean_hc_wr(8:9)];
+figure;
 sz=80;
-subplot(2,4,[3 4]);
 hold on
 for i=1:size(ae_HC_vad,1)
     ind=find(ae_HC_vad(i,:)~=0);
     aux = ae_HC_vad(i, ind);
-    ind=find(aux(:)~=-1);
-    aux=aux(ind);
     scatter_HC = scatter(mean(aux), mean_hc_wr(i),sz,"blue", "filled");
     xlim([min(aux) max(aux)]);
 end
@@ -81,24 +78,20 @@ end
 for i=1:size(ae_SLA_vad,1)
     ind=find(ae_SLA_vad(i,:)~=0);
     aux = ae_SLA_vad(i, ind);
-    ind=find(aux(:)~=-1);
-    aux=aux(ind);
     scatter_SLA = scatter(mean(aux), mean_sla_wr(i),sz, "red","filled");
 end
 hold off
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
-ylabel("Confidence");
+ylabel("Word Error Rate");
 xlabel("Articolation Entropy VAD");
 title("Scatterplot for BBP files using VAD")
-
+%%
+figure;
 sz=80;
-subplot(2,4,[6 7]);
 hold on
 for i=1:size(ae_HC_vad_th,1)
     ind=find(ae_HC_vad_th(i,:)~=0);
     aux = ae_HC_vad(i, ind);
-    ind=find(aux~=-1);
-    aux=aux(ind);
     scatter_HC = scatter(mean(aux), mean_hc_wr(i),sz,"blue", "filled");
     xlim([min(aux) max(aux)]);
 end
@@ -106,17 +99,14 @@ end
 for i=1:size(ae_SLA_vad_th,1)
     ind=find(ae_SLA_vad_th(i,:)~=0);
     aux = ae_SLA_vad(i, ind);
-    ind=find(aux~=-1);
-    aux=aux(ind);
     scatter_SLA = scatter(mean(aux), mean_sla_wr(i),sz, "red","filled");
 end
 hold off
 legend([scatter_HC, scatter_SLA],"HC", "SLA");
-ylabel("Confidence");
+ylabel("Word Error Rate");
 xlabel("Articolation Entropy VAD with threshold");
 title("Scatterplot for BBP files using VAD thresholded")
-%% Scatterplot Confidence/WER
-%Computed only over VOSK
+%%
 [count, countS] = count_csv(csv_HC,csv_SLA);
 figure;
 hold on
@@ -135,7 +125,21 @@ legend([scatter_HC, scatter_SLA],"HC", "SLA");
 ylabel("Word Error Rate");
 xlabel("Confidence");
 title("Scatterplot for BBP files using VOSK")
-
+%%
+figure;
+hold on
+for i=1:size(ae_HC,1)
+    ind=find(ae_HC(i,:)~=0);
+    aux = ae_HC(i, ind);
+    scatter_HC = histogram(aux, 15);
+end
+figure;
+hold on
+for i=1:size(ae_SLA,1)
+    ind=find(ae_SLA(i,:)~=0);
+    aux = ae_SLA(i, ind);
+    scatter_SLA = histogram(aux, 15);
+end
 %%
 aux = [];
 for i=1:size(ae_HC,1)
@@ -186,9 +190,7 @@ end
 [h, p] = kstest2(aux, auxs);
 disp(['h = ', num2str(h)]);
 disp(['p-value = ', num2str(p)]);
-%% This plot show the different activation ratio 
-%These two temporal features does not workk well, or are biased by the fact
-%that the words are segmentented for SLA, while entire sentences for HC
+%%
 ar_HC=activation_ratio(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 %%
@@ -202,7 +204,7 @@ set(gca, 'XTickLabel', labels);
 xlabel('Segmentation methods');
 ylabel('Mean activation ratio');
 legend("HC", "SLA");
-%% Activation frequency
+%%
 af_HC=activation_frequency(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 af_SLA=activation_frequency(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 %%

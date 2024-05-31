@@ -20,6 +20,7 @@ function af = activation_frequency(path, csv, csv_th, varargin)
                 ind_th(csv_th{j,2}:csv_th{j,3})=1;
             end
         end
+
         ind=ind(:)';
         ind = [0, ind, 0];
         aux=diff(ind);
@@ -27,16 +28,16 @@ function af = activation_frequency(path, csv, csv_th, varargin)
         
         ind_th=ind_th(:)';
         ind_th = [0 ind_th 0];
-        aux = diff(ind_th);
-        af(2,i)=sum(aux==1);
+        au = diff(ind_th);
+        af(2,i)=sum(au==1);
         
         if length(varargin)>=1
             ind_vosk=zeros(size(y));
-            csv=varargin{1};
-            for j=1:height(csv)
-                name=append(string(csv{j,1}), '.wav');
+            csv_vosk=varargin{1};
+            for j=1:height(csv_vosk)
+                name=append(string(csv_vosk{j,1}), '.wav');
                 if strcmp(name, files(i).name)
-                    ind_vosk(csv{j,2}:csv{j,3})=1;
+                    ind_vosk(csv_vosk{j,2}:csv_vosk{j,3})=1;
                 end
             end
             ind_vosk=ind_vosk(:)';
