@@ -31,40 +31,33 @@ ae_sla = ae_extraction(path_SLA, csv_sla_vosk, 10, 5);
 ae = {};
 conf = {};
 wer = {};
-slp = [];
+slp = {};
+sum=1;
 
 for i=1:size(count_hc,2)
 
     ae{end+1}=ae_hc(i,:);
-    if (i-1)>0
-        file_name = csv_hc_vosk{(i-1)*count_hc(i-1)+1,1};  
-        conf{end+1}=(csv_hc_vosk{(i-1)*count_hc(i-1)+1:(i-1)*count_hc(i-1)+count_hc(i),4})';
-        wer{end+1}=(csv_hc_vosk{(i-1)*count_hc(i-1)+1:(i-1)*count_hc(i-1)+count_hc(i),5})';
-    else
-        file_name = csv_hc_vosk{1,1};  
-        conf{end+1}=(csv_hc_vosk{1:i*count_hc(i),4})';
-        wer{end+1}=(csv_hc_vosk{1:i*count_hc(i),5})';
-    end
+    file_name = csv_hc_vosk{sum,1};
+    conf{end+1}=(csv_hc_vosk{sum:sum+count_hc(i)-1,4})';
+    wer{end+1}=(csv_hc_vosk{sum:sum+count_hc(i)-1,5})';
+
 
     aux = strcmp(csv_params_hc{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
-    slp = [slp mean_slp];
-
+    slp{end+1} = mean_slp;
+    sum = sum+count_hc(i);
 end
 
 %%
+sum=1;
 for i=1:size(count_sla,2)
     ae{end+1}=ae_sla(i,:);
-    if (i-1)>0
-        file_name = csv_sla_vosk{(i-1)*count_sla(i-1)+1,1};  
-        conf{end+1}=(csv_sla_vosk{(i-1)*count_sla(i-1)+1:(i-1)*count_sla(i-1)+count_sla(i),4})';
-        wer{end+1}=(csv_sla_vosk{(i-1)*count_sla(i-1)+1:(i-1)*count_sla(i-1)+count_sla(i),5})';
-    else
-        file_name = csv_sla_vosk{1,1};  
-        conf{end+1}=(csv_sla_vosk{1:i*count_sla(i),4})';
-        wer{end+1}=(csv_sla_vosk{1:i*count_sla(i),5})';
-    end
+
+    file_name = csv_sla_vosk{sum,1};
+    conf{end+1}=(csv_sla_vosk{sum:sum+count_sla(i)-1,4})';
+    wer{end+1}=(csv_sla_vosk{sum:sum+count_sla(i)-1,5})';
+
     if contains(file_name, "_al")
         file_name=strrep(file_name, "_al", "");
     end
@@ -72,7 +65,7 @@ for i=1:size(count_sla,2)
     ind = find(aux);
     mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
     slp = [slp mean_slp];
-
+    sum = sum+count_sla(i);
 end
 save(fullfile(code_folder, "Data/bbp_regr.mat"), "ae","conf","wer","slp");
 
@@ -95,21 +88,181 @@ csv_sla_th = readtable(fullfile(code_folder, "Data\SLA\PA\table_th.csv"));
 %% Activation Ratio extraction
 ar_hc=activation_ratio(path_HC, csv_hc, csv_hc_th);
 ar_sla=activation_ratio(path_SLA, csv_sla,csv_sla_th);
+[ar, ar_th] = tocell(ar_hc, ar_sla);
 %% Activation Frequency extraction
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
 af_sla=activation_frequency(path_SLA,csv_sla, csv_sla_th);
+[af, af_th] = tocell(af_hc, af_sla);
 %% Articulation Entropy extraction
 ae_hc = ae_extraction(path_HC, csv_hc,10,5);
-ae_hc = removeMV(ae_hc);
-ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
-ae_hc_th = removeMV(ae_hc_th);
-
 ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
-ae_sla = removeMV(ae_sla);
-ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
-ae_sla_th = removeMV(ae_sla_th);
-%% Compute the mean of the SLP values
+ae = removeMV(ae_hc, ae_sla);
 
+ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
+ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
+ae_th = removeMV(ae_hc_th, ae_sla_th);
+%% Compute the mean of the SLP values
+[count_hc, count_sla] = count_csv(csv_hc, csv_sla);
+slp = {};
+sum=1;
+for i=1:size(ae_hc,1)
+    file_name= csv_hc{sum,1};
+
+    if contains(file_name, "_al")
+        file_name=strrep(file_name, "_al", "");
+    end
+    aux = strcmp(csv_params_hc{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum = sum + count_hc(i);
+end
+
+sum=1;
+for i=1:size(ae_sla,1)
+    file_name= csv_sla{sum,1};
+
+    if contains(file_name, "_al")
+        file_name=strrep(file_name, "_al", "");
+    end
+    aux = strcmp(csv_params_sla{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum= sum+count_sla(i);
+end
+
+save(fullfile(code_folder, "Data/pa_regr.mat"), "ae","ar","af","slp");
+%%
+[count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
+slp = {};
+sum = 1;
+for i=1:size(ae_hc_th,1)
+    
+    file_name= csv_hc_th{sum,1};
+
+    if contains(file_name, "_al")
+        file_name=strrep(file_name, "_al", "");
+    end
+    aux = strcmp(csv_params_hc{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum = sum+count_hc(i);
+end
+sum=1;
+for i=1:size(ae_sla_th,1)
+  
+    file_name= csv_sla_th{sum,1};
+
+    if contains(file_name, "_al")
+        file_name=strrep(file_name, "_al", "");
+    end
+    aux = strcmp(csv_params_sla{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum=sum+count_sla(i);
+end
+
+save(fullfile(code_folder, "Data/pa_th_regr.mat"), "ae_th","ar_th","af_th","slp");
+%% Preparation of PATAKA files
+clear all
+clc
+
+code_folder=pwd;
+path_HC = fullfile(code_folder, "Data\Healthy Control\PATAKA");
+path_SLA = fullfile(code_folder, "Data\SLA\PATAKA");
+
+csv_params_hc = readtable(fullfile(code_folder, "Data\Healthy Control\params.csv"));
+csv_params_sla = readtable(fullfile(code_folder,"Data\SLA\params.csv"));
+
+csv_hc = readtable(fullfile(code_folder,"Data\Healthy Control\PATAKA\table.csv"));
+csv_hc_th = readtable(fullfile(code_folder,"Data\Healthy Control\PATAKA\table_th.csv"));
+
+csv_sla = readtable(fullfile(code_folder, "Data\SLA\PATAKA\table.csv"));
+csv_sla_th = readtable(fullfile(code_folder, "Data\SLA\PATAKA\table_th.csv"));
+%% Activation Ratio extraction
+ar_hc=activation_ratio(path_HC, csv_hc, csv_hc_th);
+ar_sla=activation_ratio(path_SLA, csv_sla,csv_sla_th);
+[ar, ar_th] = tocell(ar_hc, ar_sla);
+%% Activation Frequency extraction
+af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
+af_sla=activation_frequency(path_SLA,csv_sla, csv_sla_th);
+[af, af_th] = tocell(af_hc, af_sla);
+%% Articulation Entropy extraction
+ae_hc = ae_extraction(path_HC, csv_hc,10,5);
+ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
+ae = removeMV(ae_hc, ae_sla);
+
+ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
+ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
+ae_th = removeMV(ae_hc_th, ae_sla_th);
+%% Compute the mean of the SLP values
+[count_hc, count_sla] = count_csv(csv_hc, csv_sla);
+slp = {};
+sum=1;
+for i=1:size(ae_hc,1)
+    file_name= csv_hc{sum,1};
+
+    if contains(file_name, "l")
+        file_name=strrep(file_name, "l", "");
+    end
+    aux = strcmp(csv_params_hc{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum = sum + count_hc(i);
+end
+
+sum=1;
+for i=1:size(ae_sla,1)
+    file_name= csv_sla{sum,1};
+
+    if contains(file_name, "l")
+        file_name=strrep(file_name, "l", "");
+    end
+    aux = strcmp(csv_params_sla{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum= sum+count_sla(i);
+end
+
+save(fullfile(code_folder, "Data/pataka_regr.mat"), "ae","ar","af","slp");
+%%
+[count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
+slp = {};
+sum = 1;
+for i=1:size(ae_hc_th,1)
+    
+    file_name= csv_hc_th{sum,1};
+
+    if contains(file_name, "l")
+        file_name=strrep(file_name, "l", "");
+    end
+    aux = strcmp(csv_params_hc{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum = sum+count_hc(i);
+end
+sum=1;
+for i=1:size(ae_sla_th,1)
+  
+    file_name= csv_sla_th{sum,1};
+
+    if contains(file_name, "l")
+        file_name=strrep(file_name, "l", "");
+    end
+    aux = strcmp(csv_params_sla{:,1}, file_name);
+    ind = find(aux);
+    mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
+    slp{end+1} = mean_slp;
+    sum=sum+count_sla(i);
+end
+
+save(fullfile(code_folder, "Data/pataka_th_regr.mat"), "ae_th","ar_th","af_th","slp");
 %%
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
@@ -140,12 +293,33 @@ function [count, countS] = count_csv(csv_HC, csv_SLA)
 end
 
 %%
-function [ae] = removeMV(aec)
+function [ae] = removeMV(ae_hc, ae_sla)
     ae = {};
-    for i=1:size(aec,1)
-        ind = find(aec(i,:)~=0);
-        aux = aec(ind);
+    for i=1:size(ae_hc,1)
+        ind = find(ae_hc(i,:)~=0);
+        aux = ae_hc(ind);
         ind = find(aux(:)~=-1);
         ae{end+1} = aux(ind);
+    end
+
+    for i=1:size(ae_sla,1)
+        ind = find(ae_sla(i,:)~=0);
+        aux = ae_sla(ind);
+        ind = find(aux(:)~=-1);
+        ae{end+1} = aux(ind);
+    end
+end
+%%
+function [ a, a_th ] = tocell( a_hc, a_sla )
+    a = {};
+    a_th = {};
+    for i = 1:size(a_hc,2)
+        a{end+1} = a_hc(1,i);
+        a_th{end+1} = a_hc(2,i);
+    end
+    
+    for i = 1:size(a_sla, 2)
+        a{end+1} = a_sla(1,i);
+        a_th{end+1} = a_sla(2,i);
     end
 end
