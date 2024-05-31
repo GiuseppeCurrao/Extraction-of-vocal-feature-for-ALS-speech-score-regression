@@ -93,19 +93,19 @@ ar_sla=activation_ratio(path_SLA, csv_sla,csv_sla_th);
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
 af_sla=activation_frequency(path_SLA,csv_sla, csv_sla_th);
 [af, af_th] = tocell(af_hc, af_sla);
-%% Articulation Entropy extraction
-ae_hc = ae_extraction(path_HC, csv_hc,10,5);
-ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
-ae = removeMV(ae_hc, ae_sla);
-
-ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
-ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
-ae_th = removeMV(ae_hc_th, ae_sla_th);
+% %% Articulation Entropy extraction not used
+% ae_hc = ae_extraction(path_HC, csv_hc,10,5);
+% ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
+% ae = removeMV(ae_hc, ae_sla);
+% 
+% ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
+% ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
+% ae_th = removeMV(ae_hc_th, ae_sla_th);
 %% Compute the mean of the SLP values
 [count_hc, count_sla] = count_csv(csv_hc, csv_sla);
 slp = {};
 sum=1;
-for i=1:size(ae_hc,1)
+for i=1:size(count_hc,2)
     file_name= csv_hc{sum,1};
 
     if contains(file_name, "_al")
@@ -119,7 +119,7 @@ for i=1:size(ae_hc,1)
 end
 
 sum=1;
-for i=1:size(ae_sla,1)
+for i=1:size(count_sla,2)
     file_name= csv_sla{sum,1};
 
     if contains(file_name, "_al")
@@ -132,12 +132,12 @@ for i=1:size(ae_sla,1)
     sum= sum+count_sla(i);
 end
 
-save(fullfile(code_folder, "Data/pa_regr.mat"), "ae","ar","af","slp");
+save(fullfile(code_folder, "Data/pa_regr.mat"),"ar","af","slp");
 %%
 [count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
 slp = {};
 sum = 1;
-for i=1:size(ae_hc_th,1)
+for i=1:size(count_hc,2)
     
     file_name= csv_hc_th{sum,1};
 
@@ -150,8 +150,9 @@ for i=1:size(ae_hc_th,1)
     slp{end+1} = mean_slp;
     sum = sum+count_hc(i);
 end
+
 sum=1;
-for i=1:size(ae_sla_th,1)
+for i=1:size(count_sla,2)
   
     file_name= csv_sla_th{sum,1};
 
@@ -165,7 +166,7 @@ for i=1:size(ae_sla_th,1)
     sum=sum+count_sla(i);
 end
 
-save(fullfile(code_folder, "Data/pa_th_regr.mat"), "ae_th","ar_th","af_th","slp");
+save(fullfile(code_folder, "Data/pa_th_regr.mat"),"ar_th","af_th","slp");
 %% Preparation of PATAKA files
 clear all
 clc
@@ -190,19 +191,19 @@ ar_sla=activation_ratio(path_SLA, csv_sla,csv_sla_th);
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
 af_sla=activation_frequency(path_SLA,csv_sla, csv_sla_th);
 [af, af_th] = tocell(af_hc, af_sla);
-%% Articulation Entropy extraction
-ae_hc = ae_extraction(path_HC, csv_hc,10,5);
-ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
-ae = removeMV(ae_hc, ae_sla);
-
-ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
-ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
-ae_th = removeMV(ae_hc_th, ae_sla_th);
+%% Articulation Entropy extraction not used
+% ae_hc = ae_extraction(path_HC, csv_hc,10,5);
+% ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
+% ae = removeMV(ae_hc, ae_sla);
+% 
+% ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
+% ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
+% ae_th = removeMV(ae_hc_th, ae_sla_th);
 %% Compute the mean of the SLP values
 [count_hc, count_sla] = count_csv(csv_hc, csv_sla);
 slp = {};
 sum=1;
-for i=1:size(ae_hc,1)
+for i=1:size(count_hc,2)
     file_name= csv_hc{sum,1};
 
     if contains(file_name, "l")
@@ -216,7 +217,7 @@ for i=1:size(ae_hc,1)
 end
 
 sum=1;
-for i=1:size(ae_sla,1)
+for i=1:size(count_sla,2)
     file_name= csv_sla{sum,1};
 
     if contains(file_name, "l")
@@ -229,12 +230,12 @@ for i=1:size(ae_sla,1)
     sum= sum+count_sla(i);
 end
 
-save(fullfile(code_folder, "Data/pataka_regr.mat"), "ae","ar","af","slp");
+save(fullfile(code_folder, "Data/pataka_regr.mat"),"ar","af","slp");
 %%
 [count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
 slp = {};
 sum = 1;
-for i=1:size(ae_hc_th,1)
+for i=1:size(count_hc,2)
     
     file_name= csv_hc_th{sum,1};
 
@@ -247,8 +248,9 @@ for i=1:size(ae_hc_th,1)
     slp{end+1} = mean_slp;
     sum = sum+count_hc(i);
 end
+
 sum=1;
-for i=1:size(ae_sla_th,1)
+for i=1:size(count_sla,2)
   
     file_name= csv_sla_th{sum,1};
 
@@ -262,7 +264,7 @@ for i=1:size(ae_sla_th,1)
     sum=sum+count_sla(i);
 end
 
-save(fullfile(code_folder, "Data/pataka_th_regr.mat"), "ae_th","ar_th","af_th","slp");
+save(fullfile(code_folder, "Data/pataka_th_regr.mat"),"ar_th","af_th","slp");
 %%
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
