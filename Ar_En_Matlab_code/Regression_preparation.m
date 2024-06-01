@@ -42,14 +42,14 @@ for i=1:size(count_hc,2)
     wer{end+1}=(csv_hc_vosk{sum:sum+count_hc(i)-1,5})';
 
 
-    aux = strcmp(csv_params_hc{:,1}, file_name);
+    aux = strcmpi(csv_params_hc{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
     slp{end+1} = mean_slp;
     sum = sum+count_hc(i);
 end
 
-%%
+
 sum=1;
 for i=1:size(count_sla,2)
     ae{end+1}=ae_sla(i,:);
@@ -61,7 +61,7 @@ for i=1:size(count_sla,2)
     if contains(file_name, "_al")
         file_name=strrep(file_name, "_al", "");
     end
-    aux = strcmp(csv_params_sla{:,1}, file_name);
+    aux = strcmpi(csv_params_sla{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
     slp = [slp mean_slp];
@@ -111,7 +111,7 @@ for i=1:size(count_hc,2)
     if contains(file_name, "_al")
         file_name=strrep(file_name, "_al", "");
     end
-    aux = strcmp(csv_params_hc{:,1}, file_name);
+    aux = strcmpi(csv_params_hc{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
     slp{end+1} = mean_slp;
@@ -125,7 +125,7 @@ for i=1:size(count_sla,2)
     if contains(file_name, "_al")
         file_name=strrep(file_name, "_al", "");
     end
-    aux = strcmp(csv_params_sla{:,1}, file_name);
+    aux = strcmpi(csv_params_sla{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
     slp{end+1} = mean_slp;
@@ -209,7 +209,7 @@ for i=1:size(count_hc,2)
     if contains(file_name, "l")
         file_name=strrep(file_name, "l", "");
     end
-    aux = strcmp(csv_params_hc{:,1}, file_name);
+    aux = strcmpi(csv_params_hc{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
     slp{end+1} = mean_slp;
@@ -223,7 +223,7 @@ for i=1:size(count_sla,2)
     if contains(file_name, "l")
         file_name=strrep(file_name, "l", "");
     end
-    aux = strcmp(csv_params_sla{:,1}, file_name);
+    aux = strcmpi(csv_params_sla{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
     slp{end+1} = mean_slp;
@@ -242,7 +242,7 @@ for i=1:size(count_hc,2)
     if contains(file_name, "l")
         file_name=strrep(file_name, "l", "");
     end
-    aux = strcmp(csv_params_hc{:,1}, file_name);
+    aux = strcmpi(csv_params_hc{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_hc{ind, 8}+csv_params_hc{ind, 15})/2;
     slp{end+1} = mean_slp;
@@ -257,7 +257,7 @@ for i=1:size(count_sla,2)
     if contains(file_name, "l")
         file_name=strrep(file_name, "l", "");
     end
-    aux = strcmp(csv_params_sla{:,1}, file_name);
+    aux = strcmpi(csv_params_sla{:,1}, file_name);
     ind = find(aux);
     mean_slp = (csv_params_sla{ind, 8}+csv_params_sla{ind, 15})/2;
     slp{end+1} = mean_slp;
