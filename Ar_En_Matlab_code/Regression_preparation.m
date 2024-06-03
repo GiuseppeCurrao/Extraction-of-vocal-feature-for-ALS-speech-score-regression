@@ -35,8 +35,8 @@ slp = {};
 sum=1;
 
 for i=1:size(count_hc,2)
-
-    ae{end+1}=ae_hc(i,:);
+    aux = ae_hc(i, find(ae_hc(i, :)~=0));
+    ae{end+1}=aux;
     file_name = csv_hc_vosk{sum,1};
     conf{end+1}=(csv_hc_vosk{sum:sum+count_hc(i)-1,4})';
     wer{end+1}=(csv_hc_vosk{sum:sum+count_hc(i)-1,5})';
@@ -52,7 +52,8 @@ end
 
 sum=1;
 for i=1:size(count_sla,2)
-    ae{end+1}=ae_sla(i,:);
+    aux = ae_sla(i, find(ae_sla(i, :)~=0));
+    ae{end+1}=aux;
 
     file_name = csv_sla_vosk{sum,1};
     conf{end+1}=(csv_sla_vosk{sum:sum+count_sla(i)-1,4})';
