@@ -85,14 +85,14 @@ csv_hc = readtable(fullfile(code_folder,"Data\Healthy Control\PA\table.csv"));
 csv_hc_th = readtable(fullfile(code_folder,"Data\Healthy Control\PA\table_th.csv"));
 
 csv_sla = readtable(fullfile(code_folder, "Data\SLA\PA\table.csv"));
-csv_sla_th_ptk = readtable(fullfile(code_folder, "Data\SLA\PA\table_th.csv"));
+csv_sla_th = readtable(fullfile(code_folder, "Data\SLA\PA\table_th.csv"));
 %% Activation Ratio extraction
 ar_hc=activation_ratio(path_HC, csv_hc, csv_hc_th);
-ar_sla=activation_ratio(path_SLA_ptk, csv_sla,csv_sla_th_ptk);
+ar_sla=activation_ratio(path_SLA_ptk, csv_sla,csv_sla_th);
 [ar_pa, ar_th_pa] = tocell(ar_hc, ar_sla);
 %% Activation Frequency extraction
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
-af_sla=activation_frequency(path_SLA_ptk,csv_sla, csv_sla_th_ptk);
+af_sla=activation_frequency(path_SLA_ptk,csv_sla, csv_sla_th);
 [af_pa, af_th_pa] = tocell(af_hc, af_sla);
 % %% Articulation Entropy extraction not used
 % ae_hc = ae_extraction(path_HC, csv_hc,10,5);
@@ -135,7 +135,7 @@ end
 
 save(fullfile(code_folder, "Data/pa_regr.mat"),"ar_pa","af_pa","slp");
 %%
-[count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th_ptk);
+[count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
 slp = {};
 sum = 1;
 for i=1:size(count_hc,2)
@@ -155,7 +155,7 @@ end
 sum=1;
 for i=1:size(count_sla,2)
   
-    file_name= csv_sla_th_ptk{sum,1};
+    file_name= csv_sla_th{sum,1};
 
     if contains(file_name, "_al")
         file_name=strrep(file_name, "_al", "");
@@ -174,7 +174,7 @@ save(fullfile(code_folder, "Data/pa_th_regr.mat"),"ar_th_pa","af_th_pa","slp");
 
 code_folder=pwd;
 path_HC = fullfile(code_folder, "Data\Healthy Control\PATAKA");
-path_SLA_ptk = fullfile(code_folder, "Data\SLA\PATAKA");
+path_SLA = fullfile(code_folder, "Data\SLA\PATAKA");
 
 csv_params_hc = readtable(fullfile(code_folder, "Data\Healthy Control\params.csv"));
 csv_params_sla = readtable(fullfile(code_folder,"Data\SLA\params.csv"));
@@ -183,14 +183,14 @@ csv_hc = readtable(fullfile(code_folder,"Data\Healthy Control\PATAKA\table.csv")
 csv_hc_th = readtable(fullfile(code_folder,"Data\Healthy Control\PATAKA\table_th.csv"));
 
 csv_sla = readtable(fullfile(code_folder, "Data\SLA\PATAKA\table.csv"));
-csv_sla_th_ptk = readtable(fullfile(code_folder, "Data\SLA\PATAKA\table_th.csv"));
+csv_sla_th = readtable(fullfile(code_folder, "Data\SLA\PATAKA\table_th.csv"));
 %% Activation Ratio extraction
 ar_hc=activation_ratio(path_HC, csv_hc, csv_hc_th);
-ar_sla=activation_ratio(path_SLA_ptk, csv_sla,csv_sla_th_ptk);
+ar_sla=activation_ratio(path_SLA, csv_sla,csv_sla_th);
 [ar_ptk, ar_th_ptk] = tocell(ar_hc, ar_sla);
 %% Activation Frequency extraction
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
-af_sla=activation_frequency(path_SLA_ptk,csv_sla, csv_sla_th_ptk);
+af_sla=activation_frequency(path_SLA_ptk,csv_sla, csv_sla_th);
 [af_ptk, af_th_ptk] = tocell(af_hc, af_sla);
 %% Articulation Entropy extraction not used
 % ae_hc = ae_extraction(path_HC, csv_hc,10,5);
@@ -233,7 +233,7 @@ end
 
 save(fullfile(code_folder, "Data/pataka_regr.mat"),"ar_ptk","af_ptk","slp");
 %%
-[count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th_ptk);
+[count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
 slp = {};
 sum = 1;
 for i=1:size(count_hc,2)
@@ -253,7 +253,7 @@ end
 sum=1;
 for i=1:size(count_sla,2)
   
-    file_name= csv_sla_th_ptk{sum,1};
+    file_name= csv_sla_th{sum,1};
 
     if contains(file_name, "l")
         file_name=strrep(file_name, "l", "");
