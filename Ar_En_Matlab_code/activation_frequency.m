@@ -4,7 +4,7 @@ function af = activation_frequency(path, csv, csv_th, varargin)
     for i=1:numel(files)
         filename=fullfile(path, files(i).name);
         [y, fs]=audioread(filename);
-        
+        t = numel(y)/fs;
         ind=zeros(size(y));
         for j=1:height(csv)
             name=append(string(csv{j,1}), '.wav');
@@ -24,12 +24,12 @@ function af = activation_frequency(path, csv, csv_th, varargin)
         ind=ind(:)';
         ind = [0, ind, 0];
         aux=diff(ind);
-        af(1,i)=sum(aux==1);
+        af(1,i)=sum(aux==1)/t;
         
         ind_th=ind_th(:)';
         ind_th = [0 ind_th 0];
         au = diff(ind_th);
-        af(2,i)=sum(au==1);
+        af(2,i)=sum(au==1)/t;
         
         if length(varargin)>=1
             ind_vosk=zeros(size(y));
@@ -43,7 +43,7 @@ function af = activation_frequency(path, csv, csv_th, varargin)
             ind_vosk=ind_vosk(:)';
             ind_vosk = [0 ind_vosk 0];
             aux=diff(ind_vosk);
-            af(3,i)=sum(aux==1);
+            af(3,i)=sum(aux==1)/t;
         end
     end
 end
