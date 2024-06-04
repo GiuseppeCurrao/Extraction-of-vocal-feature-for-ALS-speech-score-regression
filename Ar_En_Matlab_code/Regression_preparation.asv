@@ -271,17 +271,18 @@ save(fullfile(code_folder, "Data/pataka_th_regr.mat"),"ar_th_ptk","af_th_ptk","s
 % possible to combine them
 slp_pa=load("Data\pa_regr.mat", 'slp');
 slp_pa=slp_pa.slp;
+slp_pa_th=load("Data\pa_th_regr.mat", 'slp');
+slp_pa_th=slp_pa_th.slp;
 
 slp_ptk=load("Data\pataka_regr.mat", 'slp');
 slp_ptk=slp_ptk.slp;
+slp_ptk_th=load("Data\pataka_th_regr.mat", 'slp');
+slp_ptk_th = slp_ptk_th.slp;
 %%
 slp = {};
 for i=1:19
-    slp{i}=(slp_pa{i}+slp_ptk{i})/2;
+    
 end
-
-save(fullfile(code_folder, "Data/syllables_regr.mat"),"ar_pa","af_pa","ar_ptk","af_ptk","slp");
-save(fullfile(code_folder, "Data/syllables_th_regr.mat"),"ar_th_pa","af_th_pa","ar_th_ptk","af_th_ptk","slp");
 %%
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
