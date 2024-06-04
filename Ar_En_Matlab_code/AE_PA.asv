@@ -53,9 +53,10 @@ set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PA files without threshold");
 %signicance test
+[h]
 p = ranksum(ar_HC(1,:), ar_SLA(1,:));
 annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
+    sprintf('p-value: %.4f', ...
      p), ...
     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PA.png"));
@@ -69,7 +70,7 @@ title("Activation Ratio of PA files with threshold");
 %signicance test
 p = ranksum(ar_HC(2,:), ar_SLA(2,:));
 annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
+    sprintf('p-value: %.4f', ...
      p), ...
     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PA_w_th.png"));
@@ -83,7 +84,7 @@ title("Activation Frequency of PA files without threshold");
 %signicance test
 p = ranksum(af_HC(1,:), af_SLA(1,:));
 annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
+    sprintf('p-value: %.4f', ...
      p), ...
     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PA.png"));
@@ -97,7 +98,7 @@ title("Activation Frequency of PA files with threshold");
 %signicance test
 p = ranksum(af_HC(2,:), af_SLA(2,:));
 annotation('textbox', [0.8, 0.1, 0.1, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
+    sprintf('p-value: %.4f', ...
      p), ...
     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PA_w_th.png"));
@@ -131,7 +132,6 @@ xlabel("Activation Frequency")
 ylabel("Activation Ratio")
 legend("HC", "SLA")
 hold off
-
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PATAKA.png"));
 
 figure
@@ -146,58 +146,34 @@ hold off
 
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PATAKA_w_th.png"));
 %% Boxplots
-figure('Position', [100, 100, 1200, 800])
+figure
 boxplot([ar_HC(1,:)'; ar_SLA(1,:)'], [zeros(11,1); 1+zeros(8,1)]);
 labels = {'HC', 'SLA'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PATAKA files without threshold");
-%signicance test
-p = ranksum(ar_HC(1,:), ar_SLA(1,:));
-annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
-     p), ...
-    'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA.png"));
 
-figure('Position', [100, 100, 1200, 800])
+figure
 boxplot([ar_HC(2,:)'; ar_SLA(2,:)'], [zeros(11,1); 1+zeros(8,1)]);
 labels = {'HC', 'SLA'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PATAKA files with threshold");
-%signicance test
-p = ranksum(ar_HC(2,:), ar_SLA(2,:));
-annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
-     p), ...
-    'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA_w_th.png"));
 
-figure('Position', [100, 100, 1200, 800])
+figure
 boxplot([af_HC(1,:)'; af_SLA(1,:)'], [zeros(11,1); 1+zeros(8,1)]);
 labels = {'HC', 'SLA'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Frequency');
 title("Activation Frequency of PATAKA files without threshold");
-%signicance test
-p = ranksum(af_HC(1,:), af_SLA(1,:));
-annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
-     p), ...
-    'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PATAKA.png"));
 
-figure('Position', [100, 100, 1200, 800])
+figure
 boxplot([af_HC(2,:)'; af_SLA(2,:)'], [zeros(11,1); 1+zeros(8,1)]);
 labels = {'HC', 'SLA'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Frequency');
 title("Activation Frequency of PATAKA files with threshold");
-%signicance test
-p = ranksum(af_HC(2,:), af_SLA(2,:));
-annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    sprintf('Wilcoxon test\np-value: %.4f', ...
-     p), ...
-    'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PATAKA_w_th.png"));

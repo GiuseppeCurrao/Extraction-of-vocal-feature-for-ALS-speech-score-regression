@@ -136,56 +136,6 @@ ylabel("Word Error Rate");
 xlabel("Confidence");
 title("Scatterplot for BBP files using VOSK")
 
-%%
-aux = [];
-for i=1:size(ae_HC,1)
-    ind=find(ae_HC(i,:)~=0);
-    aux = [aux ae_HC(i, ind)];
-end
-auxs =[];
-for i=1:size(ae_SLA,1)
-    ind=find(ae_SLA(i,:)~=0);
-    auxs = [auxs ae_SLA(i, ind)];
-end
-[h, p] = kstest2(aux, auxs);
-disp(['h = ', num2str(h)]);
-disp(['p-value = ', num2str(p)]);
-%%
-aux = [];
-for i=1:size(ae_HC_vad,1)
-    ind=find(ae_HC_vad(i,:)~=0);
-    a = ae_HC_vad(i, ind);
-    ind = find(a~=-1);
-    aux = [aux a(ind)];
-end
-auxs =[];
-for i=1:size(ae_SLA_vad,1)
-    ind=find(ae_SLA_vad(i,:)~=0);
-    a = ae_SLA_vad(i, ind);
-    ind = find(a~=-1);
-    auxs = [auxs a(ind)];
-end
-[h, p] = kstest2(aux, auxs);
-disp(['h = ', num2str(h)]);
-disp(['p-value = ', num2str(p)]);
-%%
-aux = [];
-for i=1:size(ae_HC_vad_th,1)
-    ind=find(ae_HC_vad_th(i,:)~=0);
-    a = ae_HC_vad_th(i, ind);
-    ind = find(a~=-1);
-    aux = [aux a(ind)];
-end
-auxs =[];
-for i=1:size(ae_SLA_vad_th,1)
-    ind=find(ae_SLA_vad_th(i,:)~=0);
-    a = ae_SLA_vad_th(i, ind);
-    ind = find(a~=-1);
-    auxs = [auxs a(ind)];
-end
-[h, p] = kstest2(aux, auxs);
-disp(['h = ', num2str(h)]);
-disp(['p-value = ', num2str(p)]);
 %% This plot show the different activation ratio 
 %These two temporal features does not workk well, or are biased by the fact
 %that the words are segmentented for SLA, while entire sentences for HC
@@ -221,36 +171,35 @@ legend("HC", "SLA");
 boxae(ae_HC, ae_SLA, "VOSK", code_folder);
 boxae(ae_HC_vad, ae_SLA_vad, "VAD", code_folder);
 boxae(ae_HC_vad_th, ae_SLA_vad_th, "VAD with th",code_folder);
-
+%%
 %Confidence
-figure;
+figure('Position', [100, 100, 1200, 800]);
 boxplot([csv_HC{:,4}; csv_SLA{:,4}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
 labels = {'HC', 'SLA'};
 set(gca, 'XTickLabel', labels);
 ylabel('Confidence');
 title("Confidence");
+p = ranksum(csv_HC{:,4}, csv_SLA{:,4});
+annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
+    sprintf('Wilcoxon test\np-value: %.4f', ...
+    p), ...
+    'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Confidence.png"));
 
 %WER
-figure;
+figure('Position', [100, 100, 1200, 800]);
 boxplot([csv_HC{:,5}; csv_SLA{:,5}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
 labels = {'HC', 'SLA'};
 set(gca, 'XTickLabel', labels);
 ylabel('Word Error Rate');
 title("Word Error Rate");
+p = ranksum(csv_HC{:,5}, csv_SLA{:,5});
+annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
+    sprintf('Wilcoxon test\np-value: %.4f', ...
+    p), ...
+    'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Word Error Rate.png"));
-%%
-function m=compute_mean(ar)
-    m=0;
-    for i=1:size(ar,1)
-        ind=find(ar(i,:)~=0);
-        aux=ar(i,ind);
-        ind=find(aux(:)~=-1);
-        ax=aux(ind);
-        m=m+mean(ax(:));
-    end   
-    m=m/size(ar,1);
-end
+
 %%
 function [m, s] = compute_mean_std(ar)
     m=[];
@@ -310,13 +259,17 @@ function [] = boxae(ae_hc, ae_sla, name, folder)
     file_name = sprintf("Boxplot of articulation entropy for %s segmentation", name);
     file_path = fullfile(path, file_name);
     file_path = strcat(file_path, '.png');
-
-    figure;
+    
+    figure('Position', [100, 100, 1200, 800]);
     boxplot([ae(:); ae_s(:)], [zeros(size(ae,1),1); 1+zeros(size(ae_s,1),1)]);
     title(file_name);
     labels = {'HC', 'SLA'};
     set(gca, 'XTickLabel', labels);
     ylabel('Articulation Entropy');
-    
+    p = ranksum(ae, ae_s);
+    annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
+    sprintf('Wilcoxon test\np-value: %.4f', ...
+     p), ...
+    'FitBoxToText', 'on', 'BackgroundColor', 'white');
     saveas(gcf, file_path);
 end
