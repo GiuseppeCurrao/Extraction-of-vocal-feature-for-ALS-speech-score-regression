@@ -74,7 +74,7 @@ for i=1:size(count_sla,2)
     slp = [slp mean_slp];
     sum = sum+count_sla(i);
 end
-save(fullfile(code_folder, "Data/bbp_regr.mat"), "ID", "ae","conf","wer","slp");
+save(fullfile(code_folder, "Data/bbp_regr.mat"), "ID","label", "ae","conf","wer","slp");
 %% Preparation of the mat file for the PA files
 clear all
 clc
