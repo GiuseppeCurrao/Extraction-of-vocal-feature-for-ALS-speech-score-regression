@@ -366,29 +366,8 @@ slp = {};
 ID = {};
 label = {};
 
-for k=1:size(ptk_id,2)
-    j = find(strcmp(pa_id, ptk_id{i}));
-    if j~=0
-        ar_pa{end+1} = pa.ar_pa{j};
-        ar_th_pa{end+1} = pa_th.ar_th_pa{j};
-        ar_ptk{end+1} = ptk.ar_ptk{k};
-        ar_th_ptk{end+1} = ptk_th.ar_th_ptk{k};
-
-        af_pa{end+1} = pa.af_pa{j};
-        af_th_pa{end+1} = pa_th.af_th_pa{j};
-        af_ptk{end+1} = ptk.af_ptk{k};
-        af_th_ptk{end+1} = ptk_th.af_th_ptk{k};
-
-        ID{end+1} = ptk_id{k};
-        label{end+1} = ptk.label{k};
-        slp{end+1} = (pa.slp_pa{j}+ptk.slp_ptk{k})/2;        
-    end
-end
-
-save(fullfile(code_folder, "Data/syllables_regr.mat"),"ID","label", ...
-    "ar_pa","ar_ptk","af_pa","af_ptk", "slp");
-save(fullfile(code_folder, "Data/syllables_th_regr.mat"),"ID","label", ...
-    "ar_th_pa","ar_th_ptk","af_th_pa","af_th_ptk", "slp");
+for i=1:size(pa_id,2)
+    j = find(strcmp(pa_id, bbp_id{i}));
 %%
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
