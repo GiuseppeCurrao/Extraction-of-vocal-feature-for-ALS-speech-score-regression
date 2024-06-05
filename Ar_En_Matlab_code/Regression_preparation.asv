@@ -285,7 +285,7 @@ for i=1:size(count_sla,2)
     sum=sum+count_sla(i);
 end
 
-save(fullfile(code_folder, "Data/pataka_th_regr.mat"),"ID","label","ar_th_ptk","af_th_ptk","slp");
+save(fullfile(code_folder, "Data/pataka_th_regr.mat"),"ar_th_ptk","af_th_ptk","slp");
 %% Dataset preparation for both syllables
 % Since both PA and PATAKA files are taken from the same patients, it is
 % possible to combine them
@@ -300,8 +300,8 @@ for i=1:19
     slp{i}=(slp_pa{i}+slp_ptk{i})/2;
 end
 
-save(fullfile(code_folder, "Data/syllables_regr.mat"),"ID","label","ar_pa","af_pa","ar_ptk","af_ptk","slp");
-save(fullfile(code_folder, "Data/syllables_th_regr.mat"),"ID","label","ar_th_pa","af_th_pa","ar_th_ptk","af_th_ptk","slp");
+save(fullfile(code_folder, "Data/syllables_regr.mat"),"ar_pa","af_pa","ar_ptk","af_ptk","slp");
+save(fullfile(code_folder, "Data/syllables_th_regr.mat"),"ar_th_pa","af_th_pa","ar_th_ptk","af_th_ptk","slp");
 %%
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
