@@ -30,7 +30,7 @@ scatter(af_SLA(1,:), ar_SLA(1,:),"blue","filled");
 title("Without treshold, PA files")
 xlabel("Activation Frequency")
 ylabel("Activation Ratio")
-legend("HC", "SLA")
+legend("HC", "ALS")
 hold off
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PA.png"));
 
@@ -41,14 +41,14 @@ scatter(af_SLA(2,:), ar_SLA(2,:),"blue","filled");
 title("With treshold, PA files")
 xlabel("Activation Frequency")
 ylabel("Activation Ratio")
-legend("HC", "SLA")
+legend("HC", "ALS")
 hold off
 
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PA_w_th.png"));
 %% Boxplots
 figure('Position', [100, 100, 1200, 800])
 boxplot([ar_HC(1,:)'; ar_SLA(1,:)'], [zeros(10,1); 1+zeros(9,1)]);
-labels = {'HC', 'SLA'};
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PA files without threshold");
@@ -62,7 +62,7 @@ saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PA.png"));
 
 figure('Position', [100, 100, 1200, 800])
 boxplot([ar_HC(2,:)'; ar_SLA(2,:)'], [zeros(10,1); 1+zeros(9,1)]);
-labels = {'HC', 'SLA'};
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PA files with threshold");
@@ -76,7 +76,7 @@ saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PA_w_th.png"));
 
 figure('Position', [100, 100, 1200, 800])
 boxplot([af_HC(1,:)'; af_SLA(1,:)'], [zeros(10,1); 1+zeros(9,1)]);
-labels = {'HC', 'SLA'};
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Frequency');
 title("Activation Frequency of PA files without threshold");
@@ -90,7 +90,7 @@ saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PA.png"));
 
 figure('Position', [100, 100, 1200, 800])
 boxplot([af_HC(2,:)'; af_SLA(2,:)'], [zeros(10,1); 1+zeros(9,1)]);
-labels = {'HC', 'SLA'};
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Frequency');
 title("Activation Frequency of PA files with threshold");
@@ -129,7 +129,7 @@ scatter(af_SLA(1,:), ar_SLA(1,:),"blue","filled");
 title("Without treshold, PATAKA files")
 xlabel("Activation Frequency")
 ylabel("Activation Ratio")
-legend("HC", "SLA")
+legend("HC", "ALS")
 hold off
 
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PATAKA.png"));
@@ -141,14 +141,14 @@ scatter(af_SLA(2,:), ar_SLA(2,:),"blue","filled");
 title("With treshold, PATAKA files")
 xlabel("Activation Frequency")
 ylabel("Activation Ratio")
-legend("HC", "SLA")
+legend("HC", "ALS")
 hold off
 
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PATAKA_w_th.png"));
 %% Boxplots
 figure('Position', [100, 100, 1200, 800])
-boxplot([ar_HC(1,:)'; ar_SLA(1,:)'], [zeros(11,1); 1+zeros(8,1)]);
-labels = {'HC', 'SLA'};
+boxplot([ar_HC(1,:)'; ar_SLA(1,:)'], [zeros(10,1); 1+zeros(8,1)]);
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PATAKA files without threshold");
@@ -161,8 +161,8 @@ annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA.png"));
 
 figure('Position', [100, 100, 1200, 800])
-boxplot([ar_HC(2,:)'; ar_SLA(2,:)'], [zeros(11,1); 1+zeros(8,1)]);
-labels = {'HC', 'SLA'};
+boxplot([ar_HC(2,:)'; ar_SLA(2,:)'], [zeros(10,1); 1+zeros(8,1)]);
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Ratio');
 title("Activation Ratio of PATAKA files with threshold");
@@ -175,8 +175,8 @@ annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA_w_th.png"));
 
 figure('Position', [100, 100, 1200, 800])
-boxplot([af_HC(1,:)'; af_SLA(1,:)'], [zeros(11,1); 1+zeros(8,1)]);
-labels = {'HC', 'SLA'};
+boxplot([af_HC(1,:)'; af_SLA(1,:)'], [zeros(10,1); 1+zeros(8,1)]);
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Frequency');
 title("Activation Frequency of PATAKA files without threshold");
@@ -189,8 +189,8 @@ annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PATAKA.png"));
 
 figure('Position', [100, 100, 1200, 800])
-boxplot([af_HC(2,:)'; af_SLA(2,:)'], [zeros(11,1); 1+zeros(8,1)]);
-labels = {'HC', 'SLA'};
+boxplot([af_HC(2,:)'; af_SLA(2,:)'], [zeros(10,1); 1+zeros(8,1)]);
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Activation Frequency');
 title("Activation Frequency of PATAKA files with threshold");

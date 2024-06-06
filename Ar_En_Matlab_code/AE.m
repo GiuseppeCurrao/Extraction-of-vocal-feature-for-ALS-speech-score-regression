@@ -60,7 +60,7 @@ for i=1:size(ae_SLA,1)
     sum=sum+countS(i);
 end
 hold off
-legend([scatter_HC, scatter_SLA],"HC", "SLA");
+legend([scatter_HC, scatter_SLA],"HC", "ALS");
 ylabel("Confidence");
 xlabel("Articolation Entropy Vosk");
 title("Scatterplot for BBP files using VOSK")
@@ -86,7 +86,7 @@ for i=1:size(ae_SLA_vad,1)
     scatter_SLA = scatter(mean(aux), mean_sla_wr(i),sz, "red","filled");
 end
 hold off
-legend([scatter_HC, scatter_SLA],"HC", "SLA");
+legend([scatter_HC, scatter_SLA],"HC", "ALS");
 ylabel("Confidence");
 xlabel("Articolation Entropy VAD");
 title("Scatterplot for BBP files using VAD")
@@ -111,7 +111,7 @@ for i=1:size(ae_SLA_vad_th,1)
     scatter_SLA = scatter(mean(aux), mean_sla_wr(i),sz, "red","filled");
 end
 hold off
-legend([scatter_HC, scatter_SLA],"HC", "SLA");
+legend([scatter_HC, scatter_SLA],"HC", "ALS");
 ylabel("Confidence");
 xlabel("Articolation Entropy VAD with threshold");
 title("Scatterplot for BBP files using VAD thresholded")
@@ -175,7 +175,7 @@ boxae(ae_HC_vad_th, ae_SLA_vad_th, "VAD with th",code_folder);
 %Confidence
 figure('Position', [100, 100, 1200, 800]);
 boxplot([csv_HC{:,4}; csv_SLA{:,4}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
-labels = {'HC', 'SLA'};
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Confidence');
 title("Confidence");
@@ -189,7 +189,7 @@ saveas(gcf, fullfile(code_folder,"Figures\Confidence.png"));
 %WER
 figure('Position', [100, 100, 1200, 800]);
 boxplot([csv_HC{:,5}; csv_SLA{:,5}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
-labels = {'HC', 'SLA'};
+labels = {'HC', 'ALS'};
 set(gca, 'XTickLabel', labels);
 ylabel('Word Error Rate');
 title("Word Error Rate");
@@ -263,7 +263,7 @@ function [] = boxae(ae_hc, ae_sla, name, folder)
     figure('Position', [100, 100, 1200, 800]);
     boxplot([ae(:); ae_s(:)], [zeros(size(ae,1),1); 1+zeros(size(ae_s,1),1)]);
     title(file_name);
-    labels = {'HC', 'SLA'};
+    labels = {'HC', 'ALS'};
     set(gca, 'XTickLabel', labels);
     ylabel('Articulation Entropy');
     p = ranksum(ae, ae_s);
