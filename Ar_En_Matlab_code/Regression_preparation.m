@@ -257,6 +257,8 @@ save(fullfile(code_folder, "Data/pataka_regr.mat"),"ID", "label","ar_ptk","af_pt
 %%
 [count_hc, count_sla] = count_csv(csv_hc_th, csv_sla_th);
 slp_th_ptk = {};
+ID = {};
+label = {};
 sum = 1;
 for i=1:size(count_hc,2)
     
@@ -367,7 +369,7 @@ ID = {};
 label = {};
 
 for k=1:size(ptk_id,2)
-    j = find(strcmp(pa_id, ptk_id{i}));
+    j = find(strcmp(pa_id, ptk_id{k}));
     if j~=0
         ar_pa{end+1} = pa.ar_pa{j};
         ar_th_pa{end+1} = pa_th.ar_th_pa{j};
