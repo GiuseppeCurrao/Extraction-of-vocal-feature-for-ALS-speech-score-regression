@@ -241,7 +241,7 @@ sum=1;
 for i=1:size(count_sla,2)
     file_name= csv_sla{sum,1};
     ID{end+1} = file_name{1,1}(1:4);
-    label{end+1} = 0;
+    label{end+1} = 1;
 
     if contains(file_name, "l")
         file_name=strrep(file_name, "l", "");
