@@ -1,4 +1,4 @@
-# Extrasction of vocal feature for ALS patients
+# Extrasction of vocal feature for ALS speech score regression
 ## Project for Neural Prostheses, 2° year of Bionics Engineering
 ### Student: Giuseppe Currao
 ### Tutor: Andrea Bandini
