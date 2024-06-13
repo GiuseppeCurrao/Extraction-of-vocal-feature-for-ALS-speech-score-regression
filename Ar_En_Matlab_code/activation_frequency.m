@@ -1,4 +1,27 @@
+%% Activation frequency
+% Function  to extrapolate the activation frequency feature from audio
+% files. Activation frequency is a feature computed counting the number of
+% active segment normalized by the overall activity time in the audio file.
+%
+%INPUT:
+%           path: path to the folder containing the audio files
+%
+%           csv: csv file containig start and end time of audio segments
+%           computed with VAD not thresholded
+%
+%           csv_th: csv file containig start and end time of audio segments
+%           computed with VAD thresholded
+%
+%           varargin: csv file containig start and end time of audio segments
+%           computed with vosk (optional parameter)
+%
+% OUTPUT:
+%           af: 2xN array (or 3xN if vosk csv is passed) containing the
+%           value of the activation frequency for each audio file. each row is a csv, N is the
+%           number of patients
+
 function af = activation_frequency(path, csv, csv_th, varargin)
+
     files = dir(fullfile(path, "*.wav"));
 
     for i=1:numel(files)
