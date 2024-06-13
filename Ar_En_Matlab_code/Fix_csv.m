@@ -1,3 +1,4 @@
+%% File to fix the parameter csv, removing all the files related to not studied patients
 clear all;
 close all;
 clc;
@@ -71,29 +72,29 @@ end
 writetable(csv_sla, file_csv);
 %%
 function wavFiles = getAllWavFiles(folder)
-    % Inizializza una cell array per memorizzare i nomi dei file
+    % Initialise a cell array to store file names
     wavFiles = {};
     
-    % Ottieni l'elenco di tutti i file e cartelle nella directory corrente
+    % Get a list of all files and folders in the current directory
     filesAndDirs = dir(folder);
     
-    % Rimuovi i puntatori alle cartelle '.' e '..'
+    % Remove pointers to folders '.' and '...'.
     filesAndDirs = filesAndDirs(~ismember({filesAndDirs.name}, {'.', '..'}));
     
-    % Itera attraverso gli elementi nella directory corrente
+    % Iterate through the elements in the current directory
     for i = 1:length(filesAndDirs)
-        % Ottieni il nome completo del file o della cartella
+        % Get the full name
         fullPath = fullfile(folder, filesAndDirs(i).name);
         
-        % Verifica se è una cartella
+        % Verify if it is a folder
         if filesAndDirs(i).isdir
-            % Chiamata ricorsiva per esplorare la cartella
+            % If it is, explore it
             wavFiles = [wavFiles; getAllWavFiles(fullPath)];
         else
-            % Verifica se è un file .wav
+            % Verify if it is a .wav file
             [~, ~, ext] = fileparts(fullPath);
             if strcmpi(ext, '.wav')
-                % Aggiungi il file .wav alla lista
+                % Add it to the list
                 [~, baseFileName, extension] = fileparts(fullPath);
                 wavFiles = [wavFiles; {baseFileName}];
             end
