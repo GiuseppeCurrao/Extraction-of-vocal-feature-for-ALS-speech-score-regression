@@ -14,17 +14,19 @@ path_SLA = fullfile(code_folder, "Data\SLA\Normal");
 csv_SLA = readtable("SLA\Normal.csv");
 csv_SLA_vad = readtable("SLA\Normal\table.csv");
 csv_SLA_vad_th = readtable("SLA\Normal\table_th.csv");
-%% Articulation entropy for the three segmentation methods 
+%% Articulation entropy for the three segmentation methods
+% Only the vosk method is used for regression
 ae_HC=ae_extraction(path_HC, csv_HC,10,5);
 ae_SLA=ae_extraction(path_SLA,csv_SLA,10,5);
 
-% ae_HC_vad=ae_extraction(path_HC, csv_HC_vad,10,5);
-% ae_SLA_vad=ae_extraction(path_SLA, csv_SLA_vad,10,5);
-% 
-% ae_HC_vad_th=ae_extraction(path_HC, csv_HC_vad_th,10,5);
-% ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
+ae_HC_vad=ae_extraction(path_HC, csv_HC_vad,10,5);
+ae_SLA_vad=ae_extraction(path_SLA, csv_SLA_vad,10,5);
+
+ae_HC_vad_th=ae_extraction(path_HC, csv_HC_vad_th,10,5);
+ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
 %% Computation of mean and std of AE for the different segmentation method
-% This value show strange behaviour for VAD
+% This value show strange behaviour for VAD. This features are not used in
+% the regression
 [mn_HC, std_HC]=compute_mean_std(ae_HC);
 [mn_HC_vad, std_HC_vad]=compute_mean_std(ae_HC_vad);
 [mn_HC_vad_th, std_HC_vad_th]=compute_mean_std(ae_HC_vad_th);
@@ -137,8 +139,8 @@ xlabel("Confidence");
 title("Scatterplot for BBP files using VOSK")
 
 %% This plot show the different activation ratio 
-%These two temporal features does not workk well, or are biased by the fact
-%that the words are segmentented for SLA, while entire sentences for HC
+%WARNING: These values have not been used in the regression
+
 ar_HC=activation_ratio(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 ar_SLA=activation_ratio(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 
@@ -153,6 +155,7 @@ xlabel('Segmentation methods');
 ylabel('Mean activation ratio');
 legend("HC", "SLA");
 %% Activation frequency
+%WARNING: These values have not been used in the regression
 af_HC=activation_frequency(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 af_SLA=activation_frequency(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 
@@ -166,13 +169,11 @@ set(gca, 'XTickLabel', labels);
 xlabel('Segmentation methods');
 ylabel('Mean activation frequency');
 legend("HC", "SLA");
-%% Boxplot of the various features
-%Articulation entropy
+%% Boxplot Articulation entropy
 boxae(ae_HC, ae_SLA, "VOSK", code_folder);
 % boxae(ae_HC_vad, ae_SLA_vad, "VAD", code_folder);
 % boxae(ae_HC_vad_th, ae_SLA_vad_th, "VAD with th",code_folder);
-%%
-%Confidence
+%% Boxplot confidence
 figure('Position', [100, 100, 1200, 800])
 hold on
 boxplot([csv_HC{:,4}; csv_SLA{:,4}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
@@ -209,8 +210,7 @@ ylim([min([csv_HC{:,4}; csv_SLA{:,4}]) max([csv_HC{:,4}; csv_SLA{:,4}]) + 0.1]);
 %     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Confidence.png"));
 hold off
-
-%WER
+%% Boxplot WER
 figure('Position', [100, 100, 1200, 800])
 hold on
 boxplot([csv_HC{:,5}; csv_SLA{:,5}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
@@ -247,7 +247,7 @@ ylim([min([csv_HC{:,5}; csv_SLA{:,5}]) max([csv_HC{:,5}; csv_SLA{:,5}]) + 0.1]);
 %     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Word Error Rate.png"));
 
-%%
+%% Function used to compute the AE mean without considering errors
 function [m, s] = compute_mean_std(ar)
     m=[];
     s=[];
@@ -260,7 +260,7 @@ function [m, s] = compute_mean_std(ar)
         s=[s std(ax)];
     end   
 end
-%%
+%% Function used to count the number of segment per audio files
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
     countS=[];
@@ -288,7 +288,7 @@ function [count, countS] = count_csv(csv_HC, csv_SLA)
         end
     end
 end
-%%
+%% function to create boxplot. Used for ae
 function [] = boxae(ae_hc, ae_sla, name, folder)
     ind = find(ae_hc~=0);
     ae=ae_hc(ind);
