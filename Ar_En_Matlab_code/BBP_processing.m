@@ -133,7 +133,7 @@ for i=1:size(ae_SLA,1)
     yaux = csv_SLA{(i-1)*countS(i)+1:(i)*countS(i),5};
     scatter_SLA=scatter(mean(aux), mean(yaux),sz,"blue", "filled");
 end
-legend([scatter_HC, scatter_SLA],"HC", "SLA");
+legend([scatter_HC, scatter_SLA],"HC", "ALS");
 ylabel("Word Error Rate");
 xlabel("Confidence");
 title("Scatterplot for BBP files using VOSK")
@@ -153,7 +153,7 @@ set(gca, 'XTickLabel', labels);
 
 xlabel('Segmentation methods');
 ylabel('Mean activation ratio');
-legend("HC", "SLA");
+legend("HC", "ALS");
 %% Activation frequency
 %WARNING: These values have not been used in the regression
 af_HC=activation_frequency(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
