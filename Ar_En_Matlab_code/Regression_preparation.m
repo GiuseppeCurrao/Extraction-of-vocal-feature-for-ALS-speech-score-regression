@@ -26,7 +26,7 @@ csv_sla_vosk = readtable(fullfile(code_folder, "Data\SLA\Normal.csv"));
 ae_hc = ae_extraction(path_HC, csv_hc_vosk, 10,5);
 ae_sla = ae_extraction(path_SLA_ptk, csv_sla_vosk, 10, 5);
 % WER and confindence values are listed in the csv file already
-%%
+%% Retriving and saving all the values
 [count_hc, count_sla] = count_csv(csv_hc_vosk, csv_sla_vosk);
 ae = {};
 conf = {};
@@ -107,7 +107,7 @@ af_sla=activation_frequency(path_SLA_ptk,csv_sla, csv_sla_th);
 % ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
 % ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
 % ae_th = removeMV(ae_hc_th, ae_sla_th);
-%% Compute the mean of the SLP values
+%% Compute the mean of the SLP values and saving of the data
 [count_hc, count_sla] = count_csv(csv_hc, csv_sla);
 slp_pa = {};
 ID = {};
@@ -216,7 +216,7 @@ af_sla=activation_frequency(path_SLA,csv_sla, csv_sla_th);
 % ae_hc_th = ae_extraction(path_HC, csv_hc_th,10,5);
 % ae_sla_th = ae_extraction(path_SLA, csv_sla_th,10,5);
 % ae_th = removeMV(ae_hc_th, ae_sla_th);
-%% Compute the mean of the SLP values
+%% Compute the mean of the SLP values and saving all the data
 [count_hc, count_sla] = count_csv(csv_hc, csv_sla);
 slp_ptk = {};
 ID = {};
