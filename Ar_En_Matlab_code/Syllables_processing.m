@@ -2,6 +2,8 @@ clear all;
 close all;
 clc;
 %% Elaboration of PA files
+%There are computation also on the not threshold files. Those will not be
+%used in the regression
 code_folder = pwd;
 path_HC = fullfile(code_folder, "Data\Healthy Control\PA");
 csv_HC = readtable("Healthy Control\PA\table.csv");
@@ -10,13 +12,13 @@ csv_HC_th = readtable("Healthy Control\PA\table_th.csv");
 path_SLA = fullfile(code_folder, "Data\SLA\PA");
 csv_SLA = readtable("SLA\PA\table.csv");
 csv_SLA_th = readtable("SLA\PA\table_th.csv");
-%%
+%% Computation of Activation Ratio
 ar_HC=activation_ratio(path_HC, csv_HC, csv_HC_th);
 ar_SLA=activation_ratio(path_SLA, csv_SLA,csv_SLA_th);
-%%
+%% Computation of Activation Frequency
 af_HC=activation_frequency(path_HC,csv_HC, csv_HC_th);
 af_SLA=activation_frequency(path_SLA,csv_SLA, csv_SLA_th);
-%% not used
+%% Computation of Articulation Entropy. Not used
 % ae_HC = ae_extraction(path_HC, csv_HC);
 % ae_HC_th = ae_extraction(path_HC, csv_HC_th);
 % 
@@ -45,7 +47,7 @@ legend("HC", "ALS")
 hold off
 
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PA_w_th.png"));
-%% Boxplots
+%% Boxplots of AR
 figure('Position', [100, 100, 1200, 800])
 boxplot([ar_HC(1,:)'; ar_SLA(1,:)'], [zeros(10,1); 1+zeros(9,1)]);
 labels = {'HC', 'ALS'};
@@ -118,7 +120,7 @@ ylim([min([ar_HC(2,:)'; ar_SLA(2,:)']) max([ar_HC(2,:)'; ar_SLA(2,:)']) + 0.15])
 %     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PA_w_th.png"));
 
-
+%% Boxplot of AF
 figure('Position', [100, 100, 1200, 800])
 boxplot([af_HC(1,:)'; af_SLA(1,:)'], [zeros(10,1); 1+zeros(9,1)]);
 labels = {'HC', 'ALS'};
@@ -155,7 +157,6 @@ ylim([min([af_HC(1,:)'; af_SLA(1,:)']) max([af_HC(1,:)'; af_SLA(1,:)']) + 0.8]);
 %     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PA.png"));
 
-5
 figure('Position', [100, 100, 1200, 800])
 boxplot([af_HC(2,:)'; af_SLA(2,:)'], [zeros(10,1); 1+zeros(9,1)]);
 labels = {'HC', 'ALS'};
@@ -199,19 +200,19 @@ csv_HC_th = readtable("Healthy Control\PATAKA\table_th.csv");
 path_SLA = fullfile(code_folder, "Data\SLA\PATAKA");
 csv_SLA = readtable("SLA\PATAKA\table.csv");
 csv_SLA_th = readtable("SLA\PATAKA\table_th.csv");
-%%
+%% Computation of Activation Ratio
 ar_HC=activation_ratio(path_HC, csv_HC, csv_HC_th);
 ar_SLA=activation_ratio(path_SLA, csv_SLA,csv_SLA_th);
-%%
+%% Computation of Activation Frequency
 af_HC=activation_frequency(path_HC,csv_HC, csv_HC_th);
 af_SLA=activation_frequency(path_SLA,csv_SLA, csv_SLA_th);
-%% Not used
+%% Computation of Articulation Entropy. Not used
 % ae_HC = ae_extraction(path_HC, csv_HC);
 % ae_HC_th = ae_extraction(path_HC, csv_HC_th);
 % 
 % ae_SLA = ae_extraction(path_SLA, csv_SLA);
 % ae_SLA_th = ae_extraction(path_SLA, csv_SLA_th);
-%%
+%% Scatterplot
 figure
 hold on
 scatter(af_HC(1,:),ar_HC(1,:),"red", "filled");
@@ -235,7 +236,7 @@ legend("HC", "ALS")
 hold off
 
 saveas(gcf, fullfile(code_folder, "Figures\Scatterplot_AR_over_AF_PATAKA_w_th.png"));
-%% Boxplots
+%% Boxplots of Activation Ratio
 figure('Position', [100, 100, 1200, 800])
 boxplot([ar_HC(1,:)'; ar_SLA(1,:)'], [zeros(10,1); 1+zeros(8,1)]);
 labels = {'HC', 'ALS'};
@@ -309,7 +310,7 @@ ylim([min([ar_HC(2,:)'; ar_SLA(2,:)']) max([ar_HC(2,:)'; ar_SLA(2,:)']) + 0.15])
 %      p), ...
 %     'FitBoxToText', 'on', 'BackgroundColor', 'white');
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA_w_th.png"));
-
+%% Boxplot of Activation Frequency
 figure('Position', [100, 100, 1200, 800])
 boxplot([af_HC(1,:)'; af_SLA(1,:)'], [zeros(10,1); 1+zeros(8,1)]);
 labels = {'HC', 'ALS'};
