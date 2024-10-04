@@ -256,21 +256,17 @@ if h == 1
     end
 end
 if ~isempty(num_asterisks)
-    % Disegna una linea sopra i boxplot
+
     max_y = max([ar_HC(1,:)'; ar_SLA(1,:)']);
     line([1, 2], [max_y + 0.1, max_y + 0.1], 'Color', 'k', 'LineWidth', 0.7);
     line([1, 1], [max_y + 0.9, max_y + 0.1], 'Color', 'k', 'LineWidth', 0.7);
     line([2, 2], [max_y + 0.9, max_y + 0.1], 'Color', 'k', 'LineWidth', 0.7);
 
-    % Aggiungi gli asterischi sopra la linea
     text(1.5, max_y + 0.12, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
 end
 xlim([0, 3]);
 ylim([min([ar_HC(1,:)'; ar_SLA(1,:)']) max([ar_HC(1,:)'; ar_SLA(1,:)']) + 0.15]);
-% annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-%     sprintf('Wilcoxon test\np-value: %.4f', ...
-%      p), ...
-%     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA.png"));
 
 
@@ -294,21 +290,18 @@ if h == 1
     end
 end
 if ~isempty(num_asterisks)
-    % Disegna una linea sopra i boxplot
+
     max_y = max([ar_HC(2,:)'; ar_SLA(2,:)']);
     line([1, 2], [max_y + 0.1, max_y + 0.1], 'Color', 'k', 'LineWidth', 0.7);
     line([1, 1], [max_y + 0.9, max_y + 0.1], 'Color', 'k', 'LineWidth', 0.7);
     line([2, 2], [max_y + 0.9, max_y + 0.1], 'Color', 'k', 'LineWidth', 0.7);
 
-    % Aggiungi gli asterischi sopra la linea
+
     text(1.5, max_y + 0.12, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
 end
 xlim([0, 3]);
 ylim([min([ar_HC(2,:)'; ar_SLA(2,:)']) max([ar_HC(2,:)'; ar_SLA(2,:)']) + 0.15]);
-% annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-%     sprintf('Wilcoxon test\np-value: %.4f', ...
-%      p), ...
-%     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Ratio_PATAKA_w_th.png"));
 %% Boxplot of Activation Frequency
 figure('Position', [100, 100, 1200, 800])
@@ -330,20 +323,18 @@ if h == 1
     end
 end
 if ~isempty(num_asterisks)
-    % Disegna una linea sopra i boxplot
+
     max_y = max([af_HC(1,:)'; af_SLA(1,:)']);
     line([1, 2], [max_y + 0.5, max_y + 0.5], 'Color', 'k', 'LineWidth', 0.7);
     line([1, 1], [max_y + 0.4, max_y + 0.5], 'Color', 'k', 'LineWidth', 0.7);
     line([2, 2], [max_y + 0.4, max_y + 0.5], 'Color', 'k', 'LineWidth', 0.7);
 
-    % Aggiungi gli asterischi sopra la linea
+
     text(1.5, max_y + 0.6, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
 end
 xlim([0, 3]);
 ylim([min([af_HC(1,:)'; af_SLA(1,:)']) max([af_HC(1,:)'; af_SLA(1,:)']) + 0.8]);% annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-%     sprintf('Wilcoxon test\np-value: %.4f', ...
-%      p), ...
-%     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PATAKA.png"));
 
 
@@ -367,18 +358,15 @@ if h == 1
     end
 end
 if ~isempty(num_asterisks)
-    % Disegna una linea sopra i boxplot
+
     max_y = max([af_HC(2,:)'; af_SLA(2,:)']);
     line([1, 2], [max_y + 0.5, max_y + 0.5], 'Color', 'k', 'LineWidth', 0.7);
     line([1, 1], [max_y + 0.4, max_y + 0.5], 'Color', 'k', 'LineWidth', 0.7);
     line([2, 2], [max_y + 0.4, max_y + 0.5], 'Color', 'k', 'LineWidth', 0.7);
 
-    % Aggiungi gli asterischi sopra la linea
     text(1.5, max_y + 0.6, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
 end
 xlim([0, 3]);
 ylim([min([af_HC(2,:)'; af_SLA(2,:)']) max([af_HC(2,:)'; af_SLA(2,:)']) + 0.8]);% annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-%     sprintf('Wilcoxon test\np-value: %.4f', ...
-%      p), ...
-%     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, fullfile(code_folder,"Figures\Activation_Frequency_PATAKA_w_th.png"));

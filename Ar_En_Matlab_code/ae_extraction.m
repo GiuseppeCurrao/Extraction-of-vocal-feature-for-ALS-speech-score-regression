@@ -1,4 +1,22 @@
-function ae = ae_extraction(path,csv, varargin)
+%% ae_extraction
+% Function  to compute the articulation entropy of feature from audio
+% files given the start and ending time points of the speech. 
+%
+%INPUT:
+%           path: path to the folder containing the audio files
+%
+%           csv: csv file containig start and end time of audio segments
+%
+%           varargin: integer to select the lenght of the window and the
+%           overlapping. If nothing is passed, the default values are
+%           applied
+%
+% OUTPUT:
+%           ae: array with the values computed. Each row contains the
+%           values of one audio file. If a value for a audio fragment is
+%           not computed, the value is substituted with -1
+
+function ae = ae_extraction(path, csv, varargin)
     str="";
     row=0;
     col=0;

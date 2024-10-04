@@ -99,7 +99,7 @@ ar_sla=activation_ratio(path_SLA_ptk, csv_sla,csv_sla_th);
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
 af_sla=activation_frequency(path_SLA_ptk,csv_sla, csv_sla_th);
 [af_pa, af_th_pa] = tocell(af_hc, af_sla);
-%% Articulation Entropy extraction not used
+%% Articulation Entropy extraction, not used
 % ae_hc = ae_extraction(path_HC, csv_hc,10,5);
 % ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
 % ae = removeMV(ae_hc, ae_sla);
@@ -208,7 +208,7 @@ ar_sla=activation_ratio(path_SLA, csv_sla,csv_sla_th);
 af_hc=activation_frequency(path_HC,csv_hc, csv_hc_th);
 af_sla=activation_frequency(path_SLA,csv_sla, csv_sla_th);
 [af_ptk, af_th_ptk] = tocell(af_hc, af_sla);
-%% Articulation Entropy extraction not used
+%% Articulation Entropy extraction, not used
 % ae_hc = ae_extraction(path_HC, csv_hc,10,5);
 % ae_sla = ae_extraction(path_SLA, csv_sla,10,5);
 % ae = removeMV(ae_hc, ae_sla);

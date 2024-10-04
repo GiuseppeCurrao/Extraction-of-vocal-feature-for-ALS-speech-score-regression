@@ -1,3 +1,19 @@
+%% Visualize segmentation
+% Function  to create a figure showing when the files are cutted over the
+% original audio track.
+%
+%INPUT:
+%           path: path to the folder containing the audio files
+%
+%           csv: csv file containig start and end time of audio segments
+%           computed with VAD not thresholded
+%
+%           csv_th: csv file containig start and end time of audio segments
+%           computed with VAD thresholded
+%
+%           varargin: csv file containig start and end time of audio segments
+%           computed with vosk (optional parameter)
+
 function visualize_segmentation(path, csv, csv_th, varargin)
     files = dir(fullfile(path, "*.wav"));
     sp = 2;

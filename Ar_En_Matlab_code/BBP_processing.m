@@ -3,6 +3,7 @@ close all;
 clc;
 %% BBP voice recording
 %computation of the entropy with the three different segmentation method
+
 code_folder =pwd;
 
 path_HC = fullfile(code_folder, "Data\Healthy Control\Normal");
@@ -16,6 +17,7 @@ csv_SLA_vad = readtable("SLA\Normal\table.csv");
 csv_SLA_vad_th = readtable("SLA\Normal\table_th.csv");
 %% Articulation entropy for the three segmentation methods
 % Only the vosk method is used for regression
+
 ae_HC=ae_extraction(path_HC, csv_HC,10,5);
 ae_SLA=ae_extraction(path_SLA,csv_SLA,10,5);
 
@@ -27,6 +29,7 @@ ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
 %% Computation of mean and std of AE for the different segmentation method
 % This value show strange behaviour for VAD. This features are not used in
 % the regression
+
 [mn_HC, std_HC]=compute_mean_std(ae_HC);
 [mn_HC_vad, std_HC_vad]=compute_mean_std(ae_HC_vad);
 [mn_HC_vad_th, std_HC_vad_th]=compute_mean_std(ae_HC_vad_th);
@@ -35,6 +38,7 @@ ae_SLA_vad_th=ae_extraction(path_SLA, csv_SLA_vad_th,10,5);
 [mn_SLA_vad, std_SLA_vad]=compute_mean_std(ae_SLA_vad);
 [mn_SLA_vad_th, std_SLA_vad_th]=compute_mean_std(ae_SLA_vad_th);
 %% Scatterplot AE/WER
+
 [count, countS] = count_csv(csv_HC,csv_SLA);
 figure;
 subplot(2,4,[1 2]);
@@ -119,6 +123,7 @@ xlabel("Articolation Entropy VAD with threshold");
 title("Scatterplot for BBP files using VAD thresholded")
 %% Scatterplot Confidence/WER
 %Computed only over VOSK
+
 [count, countS] = count_csv(csv_HC,csv_SLA);
 figure;
 hold on
@@ -148,7 +153,6 @@ data = [mean(ar_HC,2), mean(ar_SLA,2)];
 bar(data);
 labels = {'VAD', 'VAD with threshold', 'Vosk'};
 
-% Imposta le etichette dei gruppi di barre
 set(gca, 'XTickLabel', labels);
 
 xlabel('Segmentation methods');
@@ -156,6 +160,7 @@ ylabel('Mean activation ratio');
 legend("HC", "ALS");
 %% Activation frequency
 %WARNING: These values have not been used in the regression
+
 af_HC=activation_frequency(path_HC, csv_HC_vad,csv_HC_vad_th,csv_HC);
 af_SLA=activation_frequency(path_SLA,csv_SLA_vad,csv_SLA_vad_th,csv_SLA);
 
@@ -163,17 +168,18 @@ data = [mean(af_HC,2), mean(af_SLA,2)];
 bar(data);
 labels = {'VAD', 'VAD with threshold', 'Vosk'};
 
-% Imposta le etichette dei gruppi di barre
 set(gca, 'XTickLabel', labels);
 
 xlabel('Segmentation methods');
 ylabel('Mean activation frequency');
 legend("HC", "SLA");
 %% Boxplot Articulation entropy
+
 boxae(ae_HC, ae_SLA, "VOSK", code_folder);
 % boxae(ae_HC_vad, ae_SLA_vad, "VAD", code_folder);
 % boxae(ae_HC_vad_th, ae_SLA_vad_th, "VAD with th",code_folder);
 %% Boxplot confidence
+
 figure('Position', [100, 100, 1200, 800])
 hold on
 boxplot([csv_HC{:,4}; csv_SLA{:,4}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
@@ -193,24 +199,22 @@ if h == 1
     end
 end
 if ~isempty(num_asterisks)
-    % Disegna una linea sopra i boxplot
+    
     max_y = max([csv_HC{:,4}; csv_SLA{:,4}]);
     line([1, 2], [max_y + 0.05, max_y + 0.05], 'Color', 'k', 'LineWidth', 0.7);
     line([1, 1], [max_y + 0.04, max_y + 0.05], 'Color', 'k', 'LineWidth', 0.7);
     line([2, 2], [max_y + 0.04, max_y + 0.05], 'Color', 'k', 'LineWidth', 0.7);
 
-    % Aggiungi gli asterischi sopra la linea
+   
     text(1.5, max_y + 0.07, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
 end
 xlim([0, 3]);
 ylim([min([csv_HC{:,4}; csv_SLA{:,4}]) max([csv_HC{:,4}; csv_SLA{:,4}]) + 0.1]);
-% annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-%     sprintf('Wilcoxon test\np-value: %.4f', ...
-%     p), ...
-%     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, fullfile(code_folder,"Figures\Confidence.png"));
 hold off
 %% Boxplot WER
+
 figure('Position', [100, 100, 1200, 800])
 hold on
 boxplot([csv_HC{:,5}; csv_SLA{:,5}], [zeros(size(csv_HC,1),1); 1+zeros(size(csv_SLA,1),1)]);
@@ -230,24 +234,21 @@ if h == 1
     end
 end
 if ~isempty(num_asterisks)
-    % Disegna una linea sopra i boxplot
+    
     max_y = max([csv_HC{:,5}; csv_SLA{:,5}]);
     line([1, 2], [max_y + 0.05, max_y + 0.05], 'Color', 'k', 'LineWidth', 0.7);
     line([1, 1], [max_y + 0.04, max_y + 0.05], 'Color', 'k', 'LineWidth', 0.7);
     line([2, 2], [max_y + 0.04, max_y + 0.05], 'Color', 'k', 'LineWidth', 0.7);
 
-    % Aggiungi gli asterischi sopra la linea
     text(1.5, max_y + 0.07, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
 end
 xlim([0, 3]);
 ylim([min([csv_HC{:,5}; csv_SLA{:,5}]) max([csv_HC{:,5}; csv_SLA{:,5}]) + 0.1]);
-% annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-%     sprintf('Wilcoxon test\np-value: %.4f', ...
-%     p), ...
-%     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, fullfile(code_folder,"Figures\Word Error Rate.png"));
 
 %% Function used to compute the AE mean without considering errors
+
 function [m, s] = compute_mean_std(ar)
     m=[];
     s=[];
@@ -261,6 +262,7 @@ function [m, s] = compute_mean_std(ar)
     end   
 end
 %% Function used to count the number of segment per audio files
+
 function [count, countS] = count_csv(csv_HC, csv_SLA)
     count=[];
     countS=[];
@@ -289,6 +291,7 @@ function [count, countS] = count_csv(csv_HC, csv_SLA)
     end
 end
 %% function to create boxplot. Used for ae
+
 function [] = boxae(ae_hc, ae_sla, name, folder)
     ind = find(ae_hc~=0);
     ae=ae_hc(ind);
@@ -325,20 +328,17 @@ function [] = boxae(ae_hc, ae_sla, name, folder)
         end
     end
     if ~isempty(num_asterisks)
-        % Disegna una linea sopra i boxplot
+        
         max_y = max([ae(:); ae_s(:)]);
         line([1, 2], [max_y + 7, max_y + 7], 'Color', 'k', 'LineWidth', 0.7);
         line([1, 1], [max_y + 5, max_y + 7], 'Color', 'k', 'LineWidth', 0.7);
         line([2, 2], [max_y + 5, max_y + 7], 'Color', 'k', 'LineWidth', 0.7);
     
-        % Aggiungi gli asterischi sopra la linea
+        
         text(1.5, max_y + 10, num_asterisks, 'HorizontalAlignment', 'center', 'FontSize', 16);
     end
     xlim([0, 3]);
     ylim([min([ae(:); ae_s(:)]) max([ae(:); ae_s(:)]) + 15]);
-    % annotation('textbox', [0.8, 0.1, 0.3, 0.1], 'String', ...
-    % sprintf('Wilcoxon test\np-value: %.4f', ...
-    %  p), ...
-    % 'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
     saveas(gcf, file_path);
 end
