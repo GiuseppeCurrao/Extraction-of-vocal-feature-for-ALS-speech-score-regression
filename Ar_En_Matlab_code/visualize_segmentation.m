@@ -11,19 +11,23 @@ function visualize_segmentation(path, csv, csv_th, varargin)
         
         ind=create_ind(files(i),csv, size(y,1));
         ind_th=create_ind(files(i), csv_th,size(y,1));
-
+        th = 2*std(y);
         scale=max(abs(y));
         figure;
         subplot(sp,1,1);
         x=linspace(1,(numel(y)-1)/fs, numel(y));
-        plot(x,y,'b', x,ind*scale,'r');
+        hold on
+        plot(x,y,'b', x,ind*scale,'r', "LineWidth", 1.2);
         xlim([1, (numel(y)-1)/fs]);
         ylim([-(scale+0.1), scale+0.1]);
+        line([1, (numel(y)-1)/fs], [th, th], 'Color', 'k', 'Linewidth', 0.7, 'LineStyle', '--');
+        line([1, (numel(y)-1)/fs], [-th, -th], 'Color', 'k', 'Linewidth', 0.7, 'LineStyle', '--');
+        hold off
         xlabel("Time(s)");
         title("VOD activation over sound ", files(i).name);
         
         subplot(sp,1,2);
-        plot(x,y,'b', x,ind_th*scale,'r');
+        plot(x,y,'b', x,ind_th*scale,'r', "LineWidth", 1.2);
         xlim([1, (numel(y)-1)/fs]);
         ylim([-(scale+0.1), scale+0.1]);
         xlabel("Time(s)");
